@@ -3,10 +3,12 @@ QT+=widgets
 HEADERS += \
     mainwidget.h \
     signupwidget.h \
-    loggedwidget.h
+    loggedwidget.h \
+	user.h
 
 SOURCES += \
     mainwidget.cpp \
     main.cpp \
     signupwidget.cpp \
-    loggedwidget.cpp
+	user.cpp \
+	loggedwidget.cpp
