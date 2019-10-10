@@ -3,6 +3,7 @@
 
 #include <QWidget>
 #include <QtWidgets>
+#include "user.h"
 
 class loggedwidget:public QWidget
 {
@@ -17,6 +18,7 @@ private:
     QImage *inputImg;
     QPushButton *PushButton_Game1;
     QPushButton *PushButton_Game2;
+    User *user;
 };
 
 #endif // LOGGEDWIDGET_H
