@@ -1,5 +1,5 @@
 #include <QApplication>
-#include <mainwidget.h>
+#include "mainwidget.h"
 #include "signupwidget.h"
 int main(int argc, char **argv)
 {

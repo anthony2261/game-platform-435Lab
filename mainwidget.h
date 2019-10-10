@@ -18,13 +18,14 @@ private:
     QLineEdit *LineEdit_username;
     QLineEdit *LineEdit_password;
     QPushButton *PushButton_Enter;
+    QPushButton *PushButton_Guest;
     QPushButton *PushButton_Signup;
     signupwidget *swidget;
 signals:
 
 public slots:
     void signin();
-
+    void signin_guest();
     void signup();
 };
 
