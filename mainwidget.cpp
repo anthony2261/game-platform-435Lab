@@ -1,5 +1,6 @@
 #include "mainwidget.h"
 #include "loggedwidget.h"
+#include "user.h"
 
 mainwidget::mainwidget(QWidget *parent) : QWidget(parent)
 {
@@ -7,6 +8,8 @@ mainwidget::mainwidget(QWidget *parent) : QWidget(parent)
     Label_username = new QLabel("Username");
     Label_password = new QLabel("Password");
     Label_NoAccount = new QLabel("Dont have an account?");
+    Label_invalidAccount = new QLabel("");
+    Label_invalidAccount->hide();
     LineEdit_username = new QLineEdit();
     LineEdit_password = new QLineEdit();
     LineEdit_password->setEchoMode(QLineEdit::Password);
@@ -21,6 +24,7 @@ mainwidget::mainwidget(QWidget *parent) : QWidget(parent)
     GridL->addWidget(PushButton_Guest,2,1);
     GridL->addWidget(Label_NoAccount,3,0);
     GridL->addWidget(PushButton_Signup,3,1);
+    GridL->addWidget(Label_invalidAccount,4,0);
     setLayout(GridL);
     swidget = new signupwidget();
     QObject::connect(PushButton_Enter, SIGNAL(clicked(bool)), this, SLOT(signin()));
@@ -31,6 +35,40 @@ mainwidget::mainwidget(QWidget *parent) : QWidget(parent)
 void mainwidget::signin() {
     QString username = LineEdit_username->text();
     QString password = LineEdit_password->text();
+
+    QString val;
+    QFile file;
+    file.setFileName("/home/eece435l/project_ja_9/users/users.json");
+    file.open(QIODevice::ReadOnly | QIODevice::Text);
+    val = file.readAll();
+    file.close();
+    QJsonDocument d = QJsonDocument::fromJson(val.toUtf8());
+    QJsonObject sett2 = d.object();
+
+//    QVariantList inv_list = root_map["inventory"].toList();
+//    qWarning() << stat_map.value("password").toString();
+//    QJsonValue value = sett2.value(username);
+//    QJsonValue value = sett2["anthony2261"];
+//    qWarning() << value.toString();
+//    qWarning() << value;
+
+    if(sett2.value(username).isUndefined() ) {
+        Label_invalidAccount->show();
+        Label_invalidAccount->setText("Invalid Username or Password");
+    } else {
+        QVariantMap root_map = sett2.toVariantMap();
+        QVariantMap stat_map = root_map.value(username).toMap();
+        QString pass = stat_map.value("password").toString();
+
+        if (pass.compare(password) != 0) {
+            Label_invalidAccount->show();
+            Label_invalidAccount->setText("Invalid Username or Password");
+        } else {
+            // create new user here
+        }
+    }
+//        if(sett2.value(username)[]) {
+//    User user = new User
 }
 
 void mainwidget::signin_guest(){

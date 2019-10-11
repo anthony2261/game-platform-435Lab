@@ -15,6 +15,7 @@ private:
     QLabel *Label_username;
     QLabel *Label_password;
     QLabel *Label_NoAccount;
+    QLabel *Label_invalidAccount;
     QLineEdit *LineEdit_username;
     QLineEdit *LineEdit_password;
     QPushButton *PushButton_Enter;
