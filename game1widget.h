@@ -11,6 +11,7 @@ class Game1Widget:public QWidget
 public:
     explicit Game1Widget(QWidget *parent = nullptr);
 private:
+    QVBoxLayout *VerticalL;
     QGridLayout *GridL;
     QLabel *Label_Description;
     QPushButton *PushButton_Exit;

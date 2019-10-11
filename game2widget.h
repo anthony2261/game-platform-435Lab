@@ -11,6 +11,7 @@ class game2widget :  public QWidget
 public:
     explicit game2widget(QWidget *parent = nullptr);
 private:
+    QVBoxLayout *VerticalL;
     QGridLayout *GridL;
     QLabel *Label_Description;
     QPushButton *PushButton_Exit;

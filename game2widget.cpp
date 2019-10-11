@@ -4,15 +4,19 @@
 game2widget::game2widget(QWidget *parent) : QWidget(parent)
 {
     GridL = new QGridLayout;
-    Label_Description =  new QLabel("Game 2 Description");
+    VerticalL = new QVBoxLayout;
+    Label_Description =  new QLabel("Cabo is a card game that combines memory, luck and tactics.\n The objective of the game is "
+                                    "to collect the lowest cards in each \nhand to accumulate the fewest points"
+                                    " by the end of the game.");
     PushButton_Exit = new QPushButton("Exit");
     PushButton_PlayNow = new QPushButton("Play Now");
     PushButton_ViewScores = new QPushButton("View Scores");
-    GridL->addWidget(Label_Description,0,0);
-    GridL->addWidget(PushButton_PlayNow,1,0);
-    GridL->addWidget(PushButton_ViewScores,1,1);
-    GridL->addWidget(PushButton_Exit,1,2);
-    setLayout(GridL);
+    VerticalL->addWidget(Label_Description);
+    GridL->addWidget(PushButton_PlayNow,0,0);
+    GridL->addWidget(PushButton_ViewScores,0,1);
+    GridL->addWidget(PushButton_Exit,0,2);
+    VerticalL->addItem(GridL);
+    setLayout(VerticalL);
     QObject::connect(PushButton_Exit, SIGNAL(clicked(bool)), this, SLOT(exit()));
 }
 
