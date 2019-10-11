@@ -12,6 +12,7 @@ class game2widget :  public QWidget
 public:
     explicit game2widget(QWidget *parent = nullptr, User *user = new User(nullptr, "Guest", "Guest"));
 private:
+    QVBoxLayout *VerticalL;
     QGridLayout *GridL;
     QLabel *Label_Description;
     QPushButton *PushButton_Exit;
