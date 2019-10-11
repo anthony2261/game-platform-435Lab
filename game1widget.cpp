@@ -5,7 +5,7 @@ Game1Widget::Game1Widget(QWidget *parent, User *user) : QWidget(parent)
 {
     VerticalL = new QVBoxLayout;
     GridL = new QGridLayout;
-	this->user = user
+    this->user = user;
     Label_Description =  new QLabel("Snakes and Ladders is a very popular ancient Indian board game for children.\n "
                                     "The classic game depends on sheer luck since it involves rolling a die and\n moving"
                                     " on the board accordingly.The winner is the first player to reach the\n final square. "

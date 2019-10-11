@@ -17,8 +17,8 @@ game2widget::game2widget(QWidget *parent, User *user) : QWidget(parent)
     GridL->addWidget(PushButton_PlayNow,0,0);
     GridL->addWidget(PushButton_ViewScores,0,1);
     GridL->addWidget(PushButton_Exit,0,2);
-	VerticalL->addItem(GridL)
-    setLayout(GridL);
+    VerticalL->addItem(GridL);
+    setLayout(VerticalL);
     QObject::connect(PushButton_Exit, SIGNAL(clicked(bool)), this, SLOT(exit()));
 }
 
