@@ -7,13 +7,13 @@ class User : public QObject
 {
     Q_OBJECT
 public:
-    explicit User(QObject *parent = nullptr, QString uname ="", QString fname ="", QString lname ="", QString gend = "");
-private:
-    QString *username;
-    QString *firstname;
-    QString *lastname;
-    QDate *dob;
-    QString *gender;
+    explicit User(QObject *parent = nullptr, QString uname ="", QString fname ="", QString lname ="", QString dobirth = "", QString gend = "");
+
+    QString username;
+    QString firstname;
+    QString lastname;
+    QString dob;
+    QString gender;
 
 signals:
 
