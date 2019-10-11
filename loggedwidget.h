@@ -18,7 +18,13 @@ private:
     QImage *inputImg;
     QPushButton *PushButton_Game1;
     QPushButton *PushButton_Game2;
+    QPushButton *PushButton_Signout;
     User *user;
+
+public slots:
+    void signout();
+    void playgame1();
+    void playgame2();
 };
 
 #endif // LOGGEDWIDGET_H
