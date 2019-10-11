@@ -127,7 +127,6 @@ void signupwidget::create_user() {
                     Label_Status->setText("Username  already taken");
                 } else {
 
-                    bool valid_password;
                     QString Password = LineEdit_password->text();
                     bool contains_upper = false;
                     bool contains_lower = false;
@@ -144,22 +143,46 @@ void signupwidget::create_user() {
                      }
 
                     if (Password.length() >= 8 && contains_digit && contains_lower && contains_upper){
-                        Label_Status->clear();
-                        valid_password = true;
-                        //    sett2["test2"] = "also worked again!";
-                        //    if (!file.open(QIODevice::WriteOnly)) {
-                        //            qWarning("Couldn't open save file.");
-                        //            return false;
-                        //        }
 
-                        //    QJsonDocument saveDoc(sett2);
-                        //    QString json_string = saveDoc.toJson();
-                        //    file.write(json_string.toLocal8Bit());
-                        //    file.close();
+                        QString gen;
+                        if(maleRadio->isChecked()) {
+                            gen = "m";
+                        } else {
+                            gen = "f";
+                        }
+                        QDate Mydate= DateEdit->date();
+                        // as string
+//                        format = new QString("dd.MM.yyyy");
+//                        Mydate
+                        QString dateString = Mydate.toString(*format);
+                        QJsonObject stats_obj;
+                        stats_obj["fname"] = fname;
+                        stats_obj["lname"] = lname;
+                        stats_obj["password"] = Password;
+//                        stats_obj["dob"] = "11.11.2000";
+                        stats_obj["dob"] = dateString;
+                        stats_obj["gender"] = gen;
+                        QJsonArray inventory_list1;
+                        QJsonArray inventory_list2;
+                        stats_obj["score1"] = inventory_list1;
+                        stats_obj["score2"] = inventory_list2;
+                        sett2.insert(uname, stats_obj);
+                        if (!file.open(QIODevice::WriteOnly)) {
+                                qWarning("Couldn't open save file.");
+                                Label_Status->setText("Internal Error");
+                                Label_Status->show();
+                        } else {
+
+                            QJsonDocument saveDoc(sett2);
+                            QString json_string = saveDoc.toJson();
+                            file.write(json_string.toLocal8Bit());
+                            file.close();
+                            Label_Status->show();
+                            Label_Status->setText("User Created");
+                        }
                     }
 
                     else {
-                        valid_password = false;
                         Label_Status->show();
                         Label_Status->setText("Invalid Password");
                     }
