@@ -9,7 +9,7 @@ class loggedwidget:public QWidget
 {
     Q_OBJECT
 public:
-    explicit loggedwidget(QWidget *parent = nullptr,QString="");
+    explicit loggedwidget(QWidget *parent = nullptr, User *user = new User(nullptr, "Guest", "Guest"));
 
 private:
     QGridLayout *GridL;

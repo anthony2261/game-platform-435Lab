@@ -1,9 +1,10 @@
 #include "game1widget.h"
 #include "loggedwidget.h"
 
-Game1Widget::Game1Widget(QWidget *parent) : QWidget(parent)
+Game1Widget::Game1Widget(QWidget *parent, User *user) : QWidget(parent)
 {
     GridL = new QGridLayout;
+    this->user = user;
     Label_Description =  new QLabel("Game 1 Description");
     PushButton_Exit = new QPushButton("Exit");
     PushButton_PlayNow = new QPushButton("Play Now");
@@ -18,7 +19,7 @@ Game1Widget::Game1Widget(QWidget *parent) : QWidget(parent)
 
 void Game1Widget::exit() {
     this->close();
-    loggedwidget *lwidget = new loggedwidget;
+    loggedwidget *lwidget = new loggedwidget(nullptr, this->user);
     lwidget->show();
 }
 

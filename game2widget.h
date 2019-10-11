@@ -4,18 +4,20 @@
 #include <QObject>
 #include <QWidget>
 #include <QtWidgets>
+#include "user.h"
 
 class game2widget :  public QWidget
 {
     Q_OBJECT
 public:
-    explicit game2widget(QWidget *parent = nullptr);
+    explicit game2widget(QWidget *parent = nullptr, User *user = new User(nullptr, "Guest", "Guest"));
 private:
     QGridLayout *GridL;
     QLabel *Label_Description;
     QPushButton *PushButton_Exit;
     QPushButton *PushButton_PlayNow;
     QPushButton *PushButton_ViewScores;
+    User *user;
 signals:
 
 public slots:

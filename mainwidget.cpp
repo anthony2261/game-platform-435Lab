@@ -65,15 +65,18 @@ void mainwidget::signin() {
             Label_invalidAccount->setText("Invalid Username or Password");
         } else {
             // create new user here
+            User *user = new User(nullptr, username, stat_map.value("fname").toString(), stat_map.value("lname").toString(), stat_map.value("dob").toString(), stat_map.value("gender").toString());
+            this->close();
+            loggedwidget *lwidget = new loggedwidget(nullptr, user);
+            lwidget->show();
         }
     }
-//        if(sett2.value(username)[]) {
-//    User user = new User
 }
 
 void mainwidget::signin_guest(){
     this->close();
-    loggedwidget *lwidget = new loggedwidget(nullptr,QString("guest"));
+    User *guest = new User(nullptr, "Guest", "Guest");
+    loggedwidget *lwidget = new loggedwidget(nullptr, guest);
     lwidget->show();
 }
 
