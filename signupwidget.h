@@ -37,7 +37,7 @@ private:
     QVBoxLayout *VgroupLayout;
 
     QImage  *imageObject;
-    QPixmap image;
+    QString imagePath;
     QPushButton *PushButton_UploadImg;
     QPushButton *PushButton_Enter;
     QPushButton *PushButton_SignIn;

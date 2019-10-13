@@ -68,15 +68,9 @@ void signupwidget::uploadimg()
     QFileDialog dialog(this);
     dialog.setNameFilter(tr("Images (*.png *.xpm *.jpg)"));
     dialog.setViewMode(QFileDialog::Detail);
-    QString imagePath = QFileDialog::getOpenFileName(this, tr("Open File"),
+    imagePath = QFileDialog::getOpenFileName(this, tr("Open File"),
                                                     "C:/",
-                                                    tr("Images (*.png *.xpm *.jpg)"));
-    qWarning() << imagePath.isEmpty(); //it works
-    imageObject = new QImage();
-    imageObject->load(imagePath);
-    QString *outPath = new QString("/home/eece435l/project_ja_9/users/pictures/maxresdefault.jpg"); /////need to make name same as user
-    imageObject->save(*outPath); //works!
-    qWarning() << *outPath;
+                                                    tr("Images (*.png *.xpm *.jpg *.jpeg)"));
 }
 
 void signupwidget::create_user() {
@@ -116,8 +110,8 @@ void signupwidget::create_user() {
             QString uname = LineEdit_username->text();
             QJsonValue value = sett2.value(uname);
 
-            qWarning() << uname;
-            qWarning() << value.toString();
+//            qWarning() << uname;
+//            qWarning() << value.toString();
             if(uname.isEmpty() || uname.length() < 4) {
                 Label_Status->show();
                 Label_Status->setText("Username  must be at least 4 characters long");
@@ -152,14 +146,11 @@ void signupwidget::create_user() {
                         }
                         QDate Mydate= DateEdit->date();
                         // as string
-//                        format = new QString("dd.MM.yyyy");
-//                        Mydate
                         QString dateString = Mydate.toString(*format);
                         QJsonObject stats_obj;
                         stats_obj["fname"] = fname;
                         stats_obj["lname"] = lname;
                         stats_obj["password"] = Password;
-//                        stats_obj["dob"] = "11.11.2000";
                         stats_obj["dob"] = dateString;
                         stats_obj["gender"] = gen;
                         QJsonArray inventory_list1;
@@ -172,6 +163,12 @@ void signupwidget::create_user() {
                                 Label_Status->setText("Internal Error");
                                 Label_Status->show();
                         } else {
+                            if(!imagePath.isEmpty()) {
+                                imageObject = new QImage();
+                                imageObject->load(imagePath);
+                                QString *outPath = new QString("/home/eece435l/project_ja_9/users/pictures/" + uname + ".jpg"); /////need to make name same as user
+                                imageObject->save(*outPath); //works!
+                            }
 
                             QJsonDocument saveDoc(sett2);
                             QString json_string = saveDoc.toJson();
