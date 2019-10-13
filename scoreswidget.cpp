@@ -1,8 +1,9 @@
-#include "scores2widget.h"
-#include "game2widget.h"
+#include "scoreswidget.h"
+#include "gamewidget.h"
 
-scores2widget::scores2widget(QWidget *parent, User *user) : QWidget(parent)
+scoreswidget::scoreswidget(QWidget *parent, User *user, int gID) : QWidget(parent)
 {
+    this->gID = gID;
     VerticalL = new QVBoxLayout;
     GridL = new QGridLayout;
     this->user = user;
@@ -15,8 +16,8 @@ scores2widget::scores2widget(QWidget *parent, User *user) : QWidget(parent)
     QObject::connect(PushButton_Exit, SIGNAL(clicked(bool)), this, SLOT(exit()));
 }
 
-void scores2widget::exit() {
+void scoreswidget::exit() {
     this->close();
-    game2widget *gwidget = new game2widget(nullptr, this->user);
+    gamewidget *gwidget = new gamewidget(nullptr, this->user, this->gID);
     gwidget->show();
 }

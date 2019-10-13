@@ -1,7 +1,7 @@
 #include "loggedwidget.h"
 #include "mainwidget.h"
-#include "game1widget.h"
-#include "game2widget.h"
+#include "gamewidget.h"
+//#include "game2widget.h"
 #include <string>
 
 loggedwidget::loggedwidget(QWidget *parent, User *user) : QWidget(parent)
@@ -46,12 +46,12 @@ void loggedwidget::signout() {
 
 void loggedwidget::playgame1(){
     this->close();
-    Game1Widget *g1widget = new Game1Widget(nullptr, user);
-    g1widget->show();
+    gamewidget *gwidget = new gamewidget(nullptr, user, 1);
+    gwidget->show();
 }
 
 void loggedwidget::playgame2(){
     this->close();
-    game2widget *g2widget = new game2widget(nullptr, user);
-    g2widget->show();
+    gamewidget *gwidget = new gamewidget(nullptr, user, 2);
+    gwidget->show();
 }

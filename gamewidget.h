@@ -1,16 +1,16 @@
-#ifndef GAME2WIDGET_H
-#define GAME2WIDGET_H
+#ifndef GAMEWIDGET_H
+#define GAMEWIDGET_H
 
 #include <QObject>
 #include <QWidget>
 #include <QtWidgets>
 #include "user.h"
 
-class game2widget :  public QWidget
+class gamewidget : public QWidget
 {
     Q_OBJECT
 public:
-    explicit game2widget(QWidget *parent = nullptr, User *user = new User(nullptr, "Guest", "Guest"));
+        explicit gamewidget(QWidget *parent = nullptr, User *user = new User(nullptr, "Guest", "Guest"), int gID = 1);
 private:
     QVBoxLayout *VerticalL;
     QGridLayout *GridL;
@@ -19,6 +19,7 @@ private:
     QPushButton *PushButton_PlayNow;
     QPushButton *PushButton_ViewScores;
     User *user;
+    int gID;
 signals:
 
 public slots:
@@ -26,4 +27,4 @@ public slots:
     void view_scores();
 };
 
-#endif // GAME2WIDGET_H
+#endif // GAMEWIDGET_H
