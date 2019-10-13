@@ -23,6 +23,7 @@ signals:
 
 public slots:
     void exit();
+    void view_scores();
 };
 
 #endif // GAME1WIDGET_H

@@ -2,12 +2,21 @@
 #include "mainwidget.h"
 #include "game1widget.h"
 #include "game2widget.h"
+#include <string>
 
 loggedwidget::loggedwidget(QWidget *parent, User *user) : QWidget(parent)
 {
     GridL = new QGridLayout;
     this->user = user;
-    Label_username = new QLabel(user->username);
+    QString *format = new QString("dd.MM.yyyy");
+    std::string currentDate = QDate::currentDate().toString(*format).toStdString();
+    std::string dob_str = user->dob.toStdString();
+
+    if (currentDate.substr(0, currentDate.length() - 4) == dob_str.substr(0, dob_str.length() - 4)){
+        Label_username = new QLabel("Happy Birthday " + user->username + "!");
+    }
+    else
+        Label_username = new QLabel(user->username);
     Label_profilepic = new QLabel("");
     inputImg = new QImage("/home/eece435l/project_ja_9/users/pictures/" + user->username + ".jpg");
     if (inputImg->isNull()) {

@@ -1,6 +1,7 @@
 #include "game2widget.h"
 #include "loggedwidget.h"
 #include "user.h"
+#include "scores2widget.h"
 
 game2widget::game2widget(QWidget *parent, User *user) : QWidget(parent)
 {
@@ -20,10 +21,17 @@ game2widget::game2widget(QWidget *parent, User *user) : QWidget(parent)
     VerticalL->addItem(GridL);
     setLayout(VerticalL);
     QObject::connect(PushButton_Exit, SIGNAL(clicked(bool)), this, SLOT(exit()));
+    QObject::connect(PushButton_ViewScores, SIGNAL(clicked(bool)), this, SLOT(view_scores()));
 }
 
 void game2widget::exit() {
     this->close();
     loggedwidget *lwidget = new loggedwidget(nullptr, this->user);
     lwidget->show();
+}
+
+void game2widget::view_scores() {
+    this->close();
+    scores2widget *vswidget = new scores2widget(nullptr, this->user);
+    vswidget->show();
 }
