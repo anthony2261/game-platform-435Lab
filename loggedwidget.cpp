@@ -10,6 +10,9 @@ loggedwidget::loggedwidget(QWidget *parent, User *user) : QWidget(parent)
     Label_username = new QLabel(user->username);
     Label_profilepic = new QLabel("");
     inputImg = new QImage("/home/eece435l/project_ja_9/users/pictures/" + user->username + ".jpg");
+    if (inputImg->isNull()) {
+        inputImg = new QImage("/home/eece435l/project_ja_9/users/pictures/Guest.jpg");
+    }
     Label_profilepic->setPixmap(QPixmap::fromImage(*inputImg).scaled(80,100,Qt::KeepAspectRatio,Qt::FastTransformation));
     Label_profilepic->adjustSize();
     PushButton_Game1 = new QPushButton("Game 1");
