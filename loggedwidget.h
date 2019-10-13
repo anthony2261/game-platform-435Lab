@@ -5,10 +5,26 @@
 #include <QtWidgets>
 #include "user.h"
 
+/**
+  * \file loggedwidget.h
+  * \brief Contains the loggedwidget class (main account page)
+  */
+
+/**
+ * @brief The loggedwidget displays the username, profile picture, and allows the user to play two different games.
+ *
+ * If it's the account's birthday, username is replaced by "Happy birthday <username>!"
+ * If the user signed in with an account that did not upload an image, the default image (batman) is displayed.
+ */
+
 class loggedwidget:public QWidget
 {
     Q_OBJECT
 public:
+    /**
+     * @brief loggedwidget Constructor
+     * @param user User that logged in (Even if Guest)
+     */
     explicit loggedwidget(QWidget *parent = nullptr, User *user = new User(nullptr, "Guest", "Guest"));
 
 private:
@@ -22,8 +38,20 @@ private:
     User *user;
 
 public slots:
+    /**
+     * @brief Sign out, and go to the sign in page (mainwidget)
+     */
     void signout();
+
+    /**
+     * @brief playgame1
+     * Goes to Game 1 page
+     */
     void playgame1();
+    /**
+     * @brief playgame2
+     * Goes to Game 2 page
+     */
     void playgame2();
 };
 
