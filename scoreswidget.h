@@ -6,10 +6,25 @@
 #include <QtWidgets>
 #include "user.h"
 
+/**
+  * \file scoreswidget.h
+  * \brief Contains the score class (history of scores page)
+  */
+
+/**
+ * @brief The scoreswidget displays the history of the scores of the selected game of the user and has an "Exit"
+ * button to go back to the gamewidget.
+ *
+ */
 class scoreswidget:public QWidget
 {
     Q_OBJECT
 public:
+    /**
+     * @brief scoreswidget Constructor
+     * @param user User that logged in (Even if Guest)
+     * @param gID Id of the selected game
+     */
     explicit scoreswidget(QWidget *parent = nullptr, User *user = new User(nullptr, "Guest", "Guest"), int gID = 1);
 private:
     QVBoxLayout *VerticalL;
@@ -21,6 +36,9 @@ private:
 signals:
 
 public slots:
+    /**
+     * @brief go back to the gamewidget.
+     */
     void exit();
 };
 

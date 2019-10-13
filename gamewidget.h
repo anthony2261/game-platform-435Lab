@@ -6,10 +6,27 @@
 #include <QtWidgets>
 #include "user.h"
 
+
+/**
+  * \file gamewidget.h
+  * \brief Contains the gamewidget class (game menu page)
+  */
+
+/**
+ * @brief The gamewidget displays the game description and has 3 buttons: "Play Now" to starts the game,"View Scores" to
+ * the scores widget and "Exit" to go back to the logged widget.
+ *
+ */
+
 class gamewidget : public QWidget
 {
     Q_OBJECT
 public:
+    /**
+     * @brief gamewidget Constructor
+     * @param user User that logged in (Even if Guest)
+     * @param gID Id of the selected game
+     */
         explicit gamewidget(QWidget *parent = nullptr, User *user = new User(nullptr, "Guest", "Guest"), int gID = 1);
 private:
     QVBoxLayout *VerticalL;
@@ -23,7 +40,13 @@ private:
 signals:
 
 public slots:
+    /**
+     * @brief go back to the loggedwidget
+     */
     void exit();
+    /**
+     * @brief go to the scoreswidget
+     */
     void view_scores();
 };
 
