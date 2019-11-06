@@ -1,6 +1,7 @@
 #include "gamewidget.h"
 #include "loggedwidget.h"
 #include "scoreswidget.h"
+#include "snakesandladders.h"
 
 gamewidget::gamewidget(QWidget *parent,  User *user, int gID) : QWidget(parent)
 {
@@ -28,8 +29,17 @@ gamewidget::gamewidget(QWidget *parent,  User *user, int gID) : QWidget(parent)
     GridL->addWidget(PushButton_Exit,0,2);
     VerticalL->addItem(GridL);
     setLayout(VerticalL);
+    QObject::connect(PushButton_PlayNow, SIGNAL(clicked(bool)), this, SLOT(play()));
     QObject::connect(PushButton_Exit, SIGNAL(clicked(bool)), this, SLOT(exit()));
     QObject::connect(PushButton_ViewScores, SIGNAL(clicked(bool)), this, SLOT(view_scores()));
+}
+
+
+void gamewidget::play() {
+    if (this->gID == 1){
+        this->close();
+        snakesandladders *g1scene = new snakesandladders(this->user, gID);
+    }
 }
 
 void gamewidget::exit() {

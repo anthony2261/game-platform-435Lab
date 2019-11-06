@@ -40,6 +40,7 @@ private:
 signals:
 
 public slots:
+    void play();
     /**
      * @brief go back to the loggedwidget
      */

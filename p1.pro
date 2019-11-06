@@ -6,7 +6,8 @@ HEADERS += \
     loggedwidget.h \
 	user.h \
     gamewidget.h \
-    scoreswidget.h
+    scoreswidget.h \
+    snakesandladders.h
 
 SOURCES += \
     mainwidget.cpp \
@@ -15,4 +16,5 @@ SOURCES += \
 	user.cpp \
 	loggedwidget.cpp \
     gamewidget.cpp \
-    scoreswidget.cpp
+    scoreswidget.cpp \
+    snakesandladders.cpp
