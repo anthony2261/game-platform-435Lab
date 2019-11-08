@@ -17,6 +17,7 @@ public:
 
 private:
     QGraphicsView *view;
+    QGridLayout *GridL; //!< Grid
     QPushButton *PushButton_Exit;
     User *user;
     int gID;
