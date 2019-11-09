@@ -14,8 +14,11 @@ snakesandladders::snakesandladders(User *user, int gID)
     GridL = new QGridLayout;
     PushButton_Exit = new QPushButton("Exit");
     PushButton_Roll = new QPushButton("Roll Dice");
+    PushButton_Computer = new QPushButton("Computer");
     PushButton_Die1 = new QPushButton("");
     PushButton_Die2 = new QPushButton("");
+    Label_Text = new QLabel("");
+    Label_Text->hide();
     PushButton_Die1->hide();
     PushButton_Die2->hide();
 
@@ -38,27 +41,27 @@ snakesandladders::snakesandladders(User *user, int gID)
     player2_pin->setPos(230,595); // new bot left
 //    player2_pin->setPos(230 + 65*9, 595 - 65*8);
 
-    snake1= new snake(20,5);
+    snake1= new snake(37,6);
     snake1->setPixmap((QPixmap("/home/eece435l/project_ja_9/images/snake1.png")).scaled(200,200));
-    snake1->setPos(400,400);
+    snake1->setPos(400,430);
 
-    snake2= new snake(30,15);
+    snake2= new snake(98,62);
     snake2->setPixmap((QPixmap("/home/eece435l/project_ja_9/images/snake2.png")).scaled(200,200));
-    snake2->setPos(800,400);
+    snake2->setPos(265,45);
 
-    snake3= new snake(40,25);
-    snake3->setPixmap((QPixmap("/home/eece435l/project_ja_9/images/snake3.png")).scaled(200,200));
-    snake3->setPos(900,200);
+    snake3= new snake(75,49);
+    snake3->setPixmap((QPixmap("/home/eece435l/project_ja_9/images/snake1.png")).scaled(200,200));
+    snake3->setPos(550,170);
 
-    snake4= new snake(20,5);
+    snake4= new snake(55,28);
     snake4->setPixmap((QPixmap("/home/eece435l/project_ja_9/images/snake4.png")).scaled(200,200));
-    snake4->setPos(500,300);
+    snake4->setPos(530,300);
 
-    ladder1= new ladder(9,29);
+    ladder1= new ladder(8,28);
     ladder1->setPixmap((QPixmap("/home/eece435l/project_ja_9/images/ladder1.png")).scaled(200,200));
     ladder1->setPos(300,200);
 
-    ladder2= new ladder(20,5);
+    ladder2= new ladder(43,64);
     ladder2->setPixmap((QPixmap("/home/eece435l/project_ja_9/images/ladder2.png")).scaled(200,200));
     ladder2->setPos(600,470);
 
@@ -77,11 +80,13 @@ snakesandladders::snakesandladders(User *user, int gID)
     this->addItem(ladder2);
     this->user = user;
     this->gID = gID;
-    this->setSceneRect(0,0,1100,650);
+    this->setSceneRect(0,0,1100,800);
 
 
     GridL->addWidget(PushButton_Exit,7,0);
     GridL->addWidget(PushButton_Roll,0,0);
+    GridL->addWidget(PushButton_Computer,0,1);
+    GridL->addWidget(Label_Text,1,0);
     GridL->addWidget(PushButton_Die1,2,0);
     GridL->addWidget(PushButton_Die2,2,1);
     GridL->setContentsMargins(0,0,900,200);
@@ -94,6 +99,7 @@ snakesandladders::snakesandladders(User *user, int gID)
 
     QObject::connect(PushButton_Exit, SIGNAL(clicked(bool)), this, SLOT(exit()));
     QObject::connect(PushButton_Roll, SIGNAL(clicked(bool)), this, SLOT(rolldice()));
+    QObject::connect(PushButton_Computer, SIGNAL(clicked(bool)), this, SLOT(computer_turn()));
     QObject::connect(PushButton_Die1, SIGNAL(clicked(bool)), this, SLOT(player_picked_die1()));
     QObject::connect(PushButton_Die2, SIGNAL(clicked(bool)), this, SLOT(player_picked_die2()));
 }
@@ -104,7 +110,28 @@ void snakesandladders::exit() {
     gwidget->show();
 }
 
+void snakesandladders::computer_turn() {
+    PushButton_Die1->hide();
+    PushButton_Die2->hide();
+    Label_Text->show();
+    int rand1 = rand() % 6 + 1;
+    int rand2 = rand() % 6 + 1;
+    int die_picked = rand() % 2  + 1;
+
+    if (die_picked == 1) {
+        Label_Text->setText(QString("The computer\n rolled %1 \n and %2 and \n picked %1").arg(rand1).arg(rand2));
+        move_pins(rand2,rand1);
+    }
+
+    else {
+        Label_Text->setText(QString("The computer\n rolled %1 \n and %2 and \n picked %2").arg(rand1).arg(rand2));
+        move_pins(rand1,rand2);
+    }
+
+}
+
 void snakesandladders::rolldice() {
+    Label_Text->hide();
     if (!player_rolled) {
         int rand1 = rand() % 6 + 1;
         int rand2 = rand() % 6 + 1;
@@ -185,10 +212,96 @@ void snakesandladders::move_pins(int move1, int move2) {
         }
     }
 
+    check_for_snakes_and_ladders();
     relocate();
 }
 
 void snakesandladders::relocate() {
     player1_pin->setPos(200 + 65*pin1_x, 595 - 65*pin1_y);
     player2_pin->setPos(230 + 65*pin2_x, 595 - 65*pin2_y);
+}
+
+void snakesandladders::check_for_snakes_and_ladders() {
+
+    int square_number_1;
+    int square_number_2;
+
+    if (pin1_y % 2 == 0) {
+        square_number_1 = pin1_y*10 + pin1_x + 1;
+    }
+
+    else {
+        square_number_1 = pin1_y*10 + 10 - pin1_x;
+    }
+
+    if (snake1->head_square == square_number_1) {
+        pin1_x = snake1->tail_square % 10 -1;
+        pin1_y = snake1->tail_square / 10 ;
+    }
+
+    if (snake2->head_square == square_number_1) {
+        pin1_x = snake2->tail_square % 10 -1;
+        pin1_y = snake2->tail_square / 10 ;
+    }
+
+    if (snake3->head_square == square_number_1) {
+        pin1_x = snake3->tail_square % 10 -1;
+        pin1_y = snake3->tail_square / 10 ;
+    }
+
+    if (snake4->head_square == square_number_1) {
+        pin1_x = snake4->tail_square % 10 -1;
+        pin1_y = snake4->tail_square / 10 ;
+    }
+
+    if (ladder1->bottom_square == square_number_1) {
+        pin1_x = ladder1->top_square % 10 -1;
+        pin1_y = ladder1->top_square / 10 ;
+    }
+
+    if (ladder2->bottom_square == square_number_1) {
+        pin1_x = ladder2->top_square % 10 -1;
+        pin1_y = ladder2->top_square / 10 ;
+    }
+
+    //now same for pin2
+
+    if (pin2_y % 2 == 0) {
+        square_number_2 = pin2_y*10 + pin2_x + 1;
+    }
+
+    else {
+        square_number_2 = pin2_y*10 + 10 - pin2_x;
+    }
+
+    if (snake1->head_square == square_number_2) {
+        pin2_x = snake1->tail_square % 10 -1;
+        pin2_y = snake1->tail_square / 10 ;
+    }
+
+    if (snake2->head_square == square_number_2) {
+        pin2_x = snake2->tail_square % 10 -1;
+        pin2_y = snake2->tail_square / 10 ;
+    }
+
+    if (snake3->head_square == square_number_2) {
+        pin2_x = snake3->tail_square % 10 -1;
+        pin2_y = snake3->tail_square / 10 ;
+    }
+
+    if (snake4->head_square == square_number_2) {
+        pin2_x = snake4->tail_square % 10 -1;
+        pin2_y = snake4->tail_square / 10 ;
+    }
+
+    if (ladder1->bottom_square == square_number_2) {
+        pin2_x = ladder1->top_square % 10 -1;
+        pin2_y = ladder1->top_square / 10 ;
+    }
+
+    if (ladder2->bottom_square == square_number_2) {
+        pin2_x = ladder2->top_square % 10 -1;
+        pin2_y = ladder2->top_square / 10 ;
+    }
+
 }
