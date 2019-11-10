@@ -1,7 +1,9 @@
 #include "snakesandladders.h"
 #include "gamewidget.h"
 #include "square.h"
-#include <vector>
+//#include <vector>
+//#include <QtTest/QTest>
+//#include <unistd.h>
 
 snakesandladders::snakesandladders(User *user, int gID)
 {
@@ -111,23 +113,26 @@ void snakesandladders::exit() {
 }
 
 void snakesandladders::computer_turn() {
-    PushButton_Die1->hide();
-    PushButton_Die2->hide();
-    Label_Text->show();
-    int rand1 = rand() % 6 + 1;
-    int rand2 = rand() % 6 + 1;
-    int die_picked = rand() % 2  + 1;
+    if(player_picked) {
+        PushButton_Die1->hide();
+        PushButton_Die2->hide();
+        Label_Text->show();
+        int rand1 = rand() % 6 + 1;
+        int rand2 = rand() % 6 + 1;
+        int die_picked = rand() % 2  + 1;
 
-    if (die_picked == 1) {
-        Label_Text->setText(QString("The computer\n rolled %1 \n and %2 and \n picked %1").arg(rand1).arg(rand2));
-        move_pins(rand2,rand1);
+        if (die_picked == 1) {
+            Label_Text->setText(QString("The computer\n rolled %1 \n and %2 and \n picked %1").arg(rand1).arg(rand2));
+            move_pins(rand2,rand1);
+        }
+
+        else {
+            Label_Text->setText(QString("The computer\n rolled %1 \n and %2 and \n picked %2").arg(rand1).arg(rand2));
+            move_pins(rand1,rand2);
+        }
+        player_rolled = false;
+        player_picked = false;
     }
-
-    else {
-        Label_Text->setText(QString("The computer\n rolled %1 \n and %2 and \n picked %2").arg(rand1).arg(rand2));
-        move_pins(rand1,rand2);
-    }
-
 }
 
 void snakesandladders::rolldice() {
@@ -140,24 +145,21 @@ void snakesandladders::rolldice() {
         PushButton_Die1->show();
         PushButton_Die2->show();
         player_rolled = true;
-        player_picked = false;
     }
 }
 
 void snakesandladders::player_picked_die1() {
     if (!player_picked) {
-        qWarning() << PushButton_Die1->text().toInt();
+//        qWarning() << PushButton_Die1->text().toInt();
         move_pins(PushButton_Die1->text().toInt(), PushButton_Die2->text().toInt());
-        player_rolled = false;
         player_picked = true;
     }
 }
 
 void snakesandladders::player_picked_die2() {
     if (!player_picked) {
-        qWarning() << PushButton_Die2->text().toInt();
+//        qWarning() << PushButton_Die2->text().toInt();
         move_pins(PushButton_Die2->text().toInt(), PushButton_Die1->text().toInt());
-        player_rolled = false;
         player_picked = true;
     }
 }
@@ -187,6 +189,9 @@ void snakesandladders::move_pins(int move1, int move2) {
         } else {
             pin1_x++;
         }
+        relocate();
+//        QTest::qSleep(500);
+//        QThread::msleep(500);
     }
 
     for (int i = 0; i < move2; i++) {
