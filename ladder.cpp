@@ -12,3 +12,12 @@ ladder::ladder(int b, int t)
     top_square = t;
 }
 
+ladder::ladder(int bx, int by, int tx, int ty)
+{
+    bottom_square = 5;
+    top_square = 20;
+    this->bx = bx;
+    this->by = by;
+    this->tx = tx;
+    this->ty = ty;
+}
