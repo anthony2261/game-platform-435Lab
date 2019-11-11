@@ -14,15 +14,20 @@ snakesandladders::snakesandladders(User *user, int gID)
     player_rolled = false;
     player_picked = false;
     GridL = new QGridLayout;
+    PushButton_WhoStarts = new QPushButton("Who Starts?");
     PushButton_Exit = new QPushButton("Exit");
     PushButton_Roll = new QPushButton("Roll Dice");
     PushButton_Computer = new QPushButton("Computer");
     PushButton_Die1 = new QPushButton("");
     PushButton_Die2 = new QPushButton("");
+    Label_Turn = new QLabel("");
     Label_Text = new QLabel("");
+    Label_Turn->hide();
     Label_Text->hide();
     PushButton_Die1->hide();
     PushButton_Die2->hide();
+    PushButton_Computer->hide();
+    PushButton_Roll->hide();
 
     // OLD: board goes from x:200 y:0 to x:980 y:550 so each square is 78x55
     // NEW: each square is 65x65
@@ -97,11 +102,13 @@ snakesandladders::snakesandladders(User *user, int gID)
 
 
     GridL->addWidget(PushButton_Exit,7,0);
-    GridL->addWidget(PushButton_Roll,0,0);
-    GridL->addWidget(PushButton_Computer,0,1);
-    GridL->addWidget(Label_Text,1,0);
-    GridL->addWidget(PushButton_Die1,2,0);
-    GridL->addWidget(PushButton_Die2,2,1);
+    GridL->addWidget(Label_Turn,0,0);
+    GridL->addWidget(PushButton_WhoStarts,1,0);
+    GridL->addWidget(PushButton_Roll,1,0);
+    GridL->addWidget(PushButton_Computer,1,1);
+    GridL->addWidget(Label_Text,2,0);
+    GridL->addWidget(PushButton_Die1,3,0);
+    GridL->addWidget(PushButton_Die2,3,1);
     GridL->setContentsMargins(0,0,900,200);
     GridL->setVerticalSpacing(30);
 
@@ -115,6 +122,7 @@ snakesandladders::snakesandladders(User *user, int gID)
     QObject::connect(PushButton_Computer, SIGNAL(clicked(bool)), this, SLOT(computer_turn()));
     QObject::connect(PushButton_Die1, SIGNAL(clicked(bool)), this, SLOT(player_picked_die1()));
     QObject::connect(PushButton_Die2, SIGNAL(clicked(bool)), this, SLOT(player_picked_die2()));
+    QObject::connect(PushButton_WhoStarts, SIGNAL(clicked(bool)), this, SLOT(who_starts()));
 }
 
 void snakesandladders::exit() {
@@ -123,8 +131,37 @@ void snakesandladders::exit() {
     gwidget->show();
 }
 
+void snakesandladders::who_starts() {
+    PushButton_WhoStarts->hide();
+    int rand1 = rand() % 6 + 1;
+    int rand2 = rand() % 6 + 1;
+    Label_Text->setText(QString("you rolled\n %1 and \n computer\nrolled %2 ").arg(rand1).arg(rand2));
+    Label_Text->show();
+    if (rand1 > rand2) {
+        Label_Turn->setText("Player 1 Turn");
+        PushButton_Computer->show();
+        PushButton_Roll->show();
+        PushButton_Computer->setEnabled(false);
+        player_rolled = false;
+        player_picked = false;
+    }
+
+    else {
+        Label_Turn->setText("Computer's Turn");
+        PushButton_Computer->show();
+        PushButton_Roll->show();
+        PushButton_Roll->setEnabled(false);
+        player_picked = true;
+        player_rolled= true;
+    }
+    Label_Turn->show();
+
+}
+
 void snakesandladders::computer_turn() {
-    if(player_picked) {
+    Label_Text->show();
+    PushButton_Computer->setEnabled(false);
+    if(player_rolled && player_picked) {
         PushButton_Die1->hide();
         PushButton_Die2->hide();
         Label_Text->show();
@@ -141,12 +178,20 @@ void snakesandladders::computer_turn() {
             Label_Text->setText(QString("The computer\n rolled %1 \n and %2 and \n picked %2").arg(rand1).arg(rand2));
             move_pins(rand1,rand2);
         }
-        player_rolled = false;
-        player_picked = false;
+        if (rand1 != rand2){
+            player_rolled = false;
+            player_picked = false;
+            Label_Turn->setText("Player 1 Turn");
+            PushButton_Roll->setEnabled(true);
+            PushButton_Computer->setEnabled(false);
+        }
+        else
+            PushButton_Computer->setEnabled(true);
     }
 }
 
 void snakesandladders::rolldice() {
+    PushButton_Roll->setEnabled(false);
     Label_Text->hide();
     if (!player_rolled) {
         int rand1 = rand() % 6 + 1;
@@ -155,22 +200,45 @@ void snakesandladders::rolldice() {
         PushButton_Die2->setText(QString::number(rand2));
         PushButton_Die1->show();
         PushButton_Die2->show();
-        player_rolled = true;
+        if (rand1 != rand2)
+            player_rolled = true;
     }
 }
 
 void snakesandladders::player_picked_die1() {
+
+    PushButton_Die1->hide();
+    PushButton_Die2->hide();
     if (!player_picked) {
 //        qWarning() << PushButton_Die1->text().toInt();
         move_pins(PushButton_Die1->text().toInt(), PushButton_Die2->text().toInt());
+    }
+
+    if (PushButton_Die1->text().toInt() == PushButton_Die2->text().toInt()){
+        PushButton_Roll->setEnabled(true);
+    }
+    else {
+        Label_Turn->setText("Computer's Turn");
+        PushButton_Computer->setEnabled(true);
         player_picked = true;
     }
 }
 
 void snakesandladders::player_picked_die2() {
+    PushButton_Die1->hide();
+    PushButton_Die2->hide();
+
     if (!player_picked) {
 //        qWarning() << PushButton_Die2->text().toInt();
         move_pins(PushButton_Die2->text().toInt(), PushButton_Die1->text().toInt());
+    }
+
+    if (PushButton_Die1->text().toInt() == PushButton_Die2->text().toInt()){
+        PushButton_Roll->setEnabled(true);
+    }
+    else {
+        Label_Turn->setText("Computer's Turn");
+        PushButton_Computer->setEnabled(true);
         player_picked = true;
     }
 }

@@ -20,12 +20,14 @@ public:
 private:
     QGraphicsView *view;
     QGridLayout *GridL; //!< Grid
+    QPushButton *PushButton_WhoStarts;
     QPushButton *PushButton_Exit;
     QPushButton *PushButton_Roll;
     QPushButton *PushButton_Computer;
     QPushButton *PushButton_Die1;
     QPushButton *PushButton_Die2;
     QLabel *Label_Text;
+    QLabel *Label_Turn;
     User *user;
     QGraphicsPixmapItem *board;
     QGraphicsPixmapItem *player1_pin;
@@ -54,6 +56,7 @@ public slots:
     void relocate();
     void check_for_snakes_and_ladders();
     void computer_turn();
+    void who_starts();
 };
 
 #endif // SNAKESANDLADDERS_H
