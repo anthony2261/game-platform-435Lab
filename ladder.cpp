@@ -1,21 +1,21 @@
 #include "ladder.h"
 
-ladder::ladder()
-{
-    bottom_square = 5;
-    top_square = 20;
-}
+//ladder::ladder()
+//{
+//    bottom_square = 5;
+//    top_square = 20;
+//}
 
-ladder::ladder(int b, int t)
-{
-    bottom_square = b;
-    top_square = t;
-}
+//ladder::ladder(int b, int t)
+//{
+//    bottom_square = b;
+//    top_square = t;
+//}
 
 ladder::ladder(int bx, int by, int tx, int ty)
 {
-    bottom_square = 5;
-    top_square = 20;
+//    bottom_square = 5;
+//    top_square = 20;
     this->bx = bx;
     this->by = by;
     this->tx = tx;
