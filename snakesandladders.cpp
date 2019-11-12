@@ -7,6 +7,23 @@
 
 snakesandladders::snakesandladders(User *user, int gID)
 {
+    bool is_random;
+    QString val;
+    QFile file;
+    file.setFileName("/home/eece435l/project_ja_9/users/snakes&ladders.json");
+    file.open(QIODevice::ReadOnly | QIODevice::Text);
+    val = file.readAll();
+    file.close();
+    QJsonDocument d = QJsonDocument::fromJson(val.toUtf8());
+    QJsonObject sett2 = d.object();
+    QVariantMap root_map = sett2.toVariantMap();
+
+    if(root_map.value("random").toString() == "no") {
+        is_random = false;
+    } else {
+        is_random = true;
+    }
+
     pin1_x = 0;
     pin1_y = 0;
     pin2_x = 0;
@@ -30,7 +47,6 @@ snakesandladders::snakesandladders(User *user, int gID)
     PushButton_Computer->hide();
     PushButton_Roll->hide();
 
-    // OLD: board goes from x:200 y:0 to x:980 y:550 so each square is 78x55
     // NEW: each square is 65x65
     board = new QGraphicsPixmapItem();
     board->setPixmap((QPixmap("/home/eece435l/project_ja_9/images/background2.png")));
@@ -38,62 +54,186 @@ snakesandladders::snakesandladders(User *user, int gID)
 
     player1_pin = new QGraphicsPixmapItem();
     player1_pin->setPixmap((QPixmap("/home/eece435l/project_ja_9/images/pin1.png")).scaled(40,40));
-//    player1_pin->setPos(980,0);old
-//    player1_pin->setPos(785,10); new top right
     player1_pin->setPos(200,595); // new bot left
-//    player1_pin->setPos(200 + 65, 595 - 65);
 
     player2_pin = new QGraphicsPixmapItem();
     player2_pin->setPixmap((QPixmap("/home/eece435l/project_ja_9/images/pin2.png")).scaled(40,40));
-//    player2_pin->setPos(200,550);
     player2_pin->setPos(230,595); // new bot left
-//    player2_pin->setPos(230 + 65*9, 595 - 65*8);
 
     int snake1_topxrand = rand() % 7 + 1;
     int snake1_topyrand = rand() % 7 + 3;
-
-    snake1= new snake(snake1_topxrand + 2, snake1_topyrand - 3, snake1_topxrand, snake1_topyrand);
-    snake1->setPixmap((QPixmap("/home/eece435l/project_ja_9/images/snake1.png")).scaled(150,200));
-    snake1->setPos(225 + 65*snake1_topxrand, 625 - 65*snake1_topyrand);
+//    qWarning() << is_random;
+    if (is_random) {
+        snake1= new snake(snake1_topxrand + 2, snake1_topyrand - 3, snake1_topxrand, snake1_topyrand);
+        snake1->setPixmap((QPixmap("/home/eece435l/project_ja_9/images/snake1.png")).scaled(150,200));
+        snake1->setPos(225 + 65*snake1_topxrand, 625 - 65*snake1_topyrand);
+    } else {
+        QString val;
+        QFile file;
+        file.setFileName("/home/eece435l/project_ja_9/users/snakes&ladders.json");
+        file.open(QIODevice::ReadOnly | QIODevice::Text);
+        val = file.readAll();
+        file.close();
+        QJsonDocument d = QJsonDocument::fromJson(val.toUtf8());
+        QJsonObject sett2 = d.object();
+        QVariantMap root_map = sett2.toVariantMap();
+        QVariantMap stat_map = root_map.value("snake1").toMap();
+        QString snake1x = stat_map.value("x").toString();
+        QString snake1y = stat_map.value("y").toString();
+        snake1= new snake(snake1x.toInt() + 2, snake1y.toInt() - 3, snake1x.toInt(), snake1y.toInt());
+        snake1->setPixmap((QPixmap("/home/eece435l/project_ja_9/images/snake1.png")).scaled(150,200));
+        snake1->setPos(225 + 65*snake1x.toInt(), 625 - 65*snake1y.toInt());
+    }
 
     int snake2_topxrand = rand() % 8 + 2;
     int snake2_topyrand = rand() % 7 + 3;
-    snake2= new snake(snake2_topxrand - 2, snake2_topyrand - 3, snake2_topxrand, snake2_topyrand);
-    snake2->setPixmap((QPixmap("/home/eece435l/project_ja_9/images/snake2.png")).scaled(200,300));
-    snake2->setPos(108 + 65 * snake2_topxrand, 585 - 65 * snake2_topyrand);
+//    snake2= new snake(snake2_topxrand - 2, snake2_topyrand - 3, snake2_topxrand, snake2_topyrand);
+//    snake2->setPixmap((QPixmap("/home/eece435l/project_ja_9/images/snake2.png")).scaled(200,300));
+//    snake2->setPos(108 + 65 * snake2_topxrand, 585 - 65 * snake2_topyrand);
+
+    if (is_random) {
+        snake2= new snake(snake2_topxrand - 2, snake2_topyrand - 3, snake2_topxrand, snake2_topyrand);
+        snake2->setPixmap((QPixmap("/home/eece435l/project_ja_9/images/snake2.png")).scaled(200,300));
+        snake2->setPos(108 + 65 * snake2_topxrand, 585 - 65 * snake2_topyrand);
+    } else {
+        QString val;
+        QFile file;
+        file.setFileName("/home/eece435l/project_ja_9/users/snakes&ladders.json");
+        file.open(QIODevice::ReadOnly | QIODevice::Text);
+        val = file.readAll();
+        file.close();
+        QJsonDocument d = QJsonDocument::fromJson(val.toUtf8());
+        QJsonObject sett2 = d.object();
+        QVariantMap root_map = sett2.toVariantMap();
+        QVariantMap stat_map = root_map.value("snake2").toMap();
+        QString snake2x = stat_map.value("x").toString();
+        QString snake2y = stat_map.value("y").toString();
+        snake2= new snake(snake2x.toInt() - 2, snake2y.toInt() - 3, snake2x.toInt(), snake2y.toInt());
+        snake2->setPixmap((QPixmap("/home/eece435l/project_ja_9/images/snake2.png")).scaled(200,300));
+        snake2->setPos(108 + 65*snake2x.toInt(), 585 - 65*snake2y.toInt());
+    }
+
 
     int snake3_topxrand = rand() % 9;
     int snake3_topyrand = rand() % 6 + 3;
-    snake3= new snake(snake3_topxrand, snake3_topyrand - 3, snake3_topxrand, snake3_topyrand);
-    snake3->setPixmap((QPixmap("/home/eece435l/project_ja_9/images/snake3.png")).scaled(99,223));
-    snake3->setPos(225 + 65*snake3_topxrand, 615 - 65 * snake3_topyrand);
+    if(is_random) {
+        snake3= new snake(snake3_topxrand, snake3_topyrand - 3, snake3_topxrand, snake3_topyrand);
+        snake3->setPixmap((QPixmap("/home/eece435l/project_ja_9/images/snake3.png")).scaled(99,223));
+        snake3->setPos(225 + 65*snake3_topxrand, 615 - 65 * snake3_topyrand);
+    } else {
+        QString val;
+        QFile file;
+        file.setFileName("/home/eece435l/project_ja_9/users/snakes&ladders.json");
+        file.open(QIODevice::ReadOnly | QIODevice::Text);
+        val = file.readAll();
+        file.close();
+        QJsonDocument d = QJsonDocument::fromJson(val.toUtf8());
+        QJsonObject sett2 = d.object();
+        QVariantMap root_map = sett2.toVariantMap();
+        QVariantMap stat_map = root_map.value("snake3").toMap();
+        QString snake3x = stat_map.value("x").toString();
+        QString snake3y = stat_map.value("y").toString();
+        snake3= new snake(snake3x.toInt(), snake3y.toInt() - 3, snake3x.toInt(), snake3y.toInt());
+        snake3->setPixmap((QPixmap("/home/eece435l/project_ja_9/images/snake3.png")).scaled(99,223));
+        snake3->setPos(225 + 65*snake3x.toInt(), 615 - 65 * snake3y.toInt());
+    }
 
     int snake4_topxrand = rand() % 5 + 1;
     int snake4_topyrand = rand() % 7 + 3;
-    snake4= new snake(snake4_topxrand + 3, snake4_topyrand - 3, snake4_topxrand, snake4_topyrand);
-    snake4->setPixmap((QPixmap("/home/eece435l/project_ja_9/images/snake4.png")).scaled(200,200));
-    snake4->setPos(240 + 65 * snake4_topxrand, 625 - 65 * snake4_topyrand);
+    if(is_random) {
+        snake4= new snake(snake4_topxrand + 3, snake4_topyrand - 3, snake4_topxrand, snake4_topyrand);
+        snake4->setPixmap((QPixmap("/home/eece435l/project_ja_9/images/snake4.png")).scaled(200,200));
+        snake4->setPos(240 + 65 * snake4_topxrand, 625 - 65 * snake4_topyrand);
+    } else {
+        QString val;
+        QFile file;
+        file.setFileName("/home/eece435l/project_ja_9/users/snakes&ladders.json");
+        file.open(QIODevice::ReadOnly | QIODevice::Text);
+        val = file.readAll();
+        file.close();
+        QJsonDocument d = QJsonDocument::fromJson(val.toUtf8());
+        QJsonObject sett2 = d.object();
+        QVariantMap root_map = sett2.toVariantMap();
+        QVariantMap stat_map = root_map.value("snake4").toMap();
+        QString snake4x = stat_map.value("x").toString();
+        QString snake4y = stat_map.value("y").toString();
+        snake4= new snake(snake4x.toInt()+ 3, snake4y.toInt()- 3, snake4x.toInt(), snake4y.toInt());
+        snake4->setPixmap((QPixmap("/home/eece435l/project_ja_9/images/snake4.png")).scaled(200,200));
+        snake4->setPos(240 + 65 * snake4x.toInt(), 625 - 65 * snake4y.toInt());
+    }
 
     int ladder1_topxrand = rand() % 9 + 1;
     int ladder1_topyrand = rand() % 8 + 2;
-
-    ladder1 = new ladder(ladder1_topxrand, ladder1_topyrand - 2, ladder1_topxrand, ladder1_topyrand);
-    ladder1->setPixmap((QPixmap("/home/eece435l/project_ja_9/images/ladder1.png")).scaled(49,175));
-    ladder1->setPos(220 + 65*ladder1_topxrand, 600 - 65*ladder1_topyrand);
+    if(is_random) {
+        ladder1 = new ladder(ladder1_topxrand, ladder1_topyrand - 2, ladder1_topxrand, ladder1_topyrand);
+        ladder1->setPixmap((QPixmap("/home/eece435l/project_ja_9/images/ladder1.png")).scaled(49,175));
+        ladder1->setPos(220 + 65*ladder1_topxrand, 600 - 65*ladder1_topyrand);
+    } else {
+        QString val;
+        QFile file;
+        file.setFileName("/home/eece435l/project_ja_9/users/snakes&ladders.json");
+        file.open(QIODevice::ReadOnly | QIODevice::Text);
+        val = file.readAll();
+        file.close();
+        QJsonDocument d = QJsonDocument::fromJson(val.toUtf8());
+        QJsonObject sett2 = d.object();
+        QVariantMap root_map = sett2.toVariantMap();
+        QVariantMap stat_map = root_map.value("ladder1").toMap();
+        QString ladder1x = stat_map.value("x").toString();
+        QString ladder1y = stat_map.value("y").toString();
+        ladder1 = new ladder(ladder1x.toInt(), ladder1y.toInt()- 2, ladder1x.toInt(), ladder1y.toInt());
+        ladder1->setPixmap((QPixmap("/home/eece435l/project_ja_9/images/ladder1.png")).scaled(49,175));
+        ladder1->setPos(220 + 65*ladder1x.toInt(), 600 - 65*ladder1y.toInt());
+    }
 
     int ladder2_topxrand = rand() % 9 + 1;
     int ladder2_topyrand = rand() % 7 + 3;
 
-    ladder2= new ladder(ladder2_topxrand - 1, ladder2_topyrand - 3, ladder2_topxrand, ladder2_topyrand);
-    ladder2->setPixmap((QPixmap("/home/eece435l/project_ja_9/images/ladder2.png")).scaled(80,270));
-    ladder2->setPos(170 + 65*ladder2_topxrand, 590 - 65*ladder2_topyrand);
+    if(is_random) {
+        ladder2= new ladder(ladder2_topxrand - 1, ladder2_topyrand - 3, ladder2_topxrand, ladder2_topyrand);
+        ladder2->setPixmap((QPixmap("/home/eece435l/project_ja_9/images/ladder2.png")).scaled(80,270));
+        ladder2->setPos(170 + 65*ladder2_topxrand, 590 - 65*ladder2_topyrand);
+    } else {
+        QString val;
+        QFile file;
+        file.setFileName("/home/eece435l/project_ja_9/users/snakes&ladders.json");
+        file.open(QIODevice::ReadOnly | QIODevice::Text);
+        val = file.readAll();
+        file.close();
+        QJsonDocument d = QJsonDocument::fromJson(val.toUtf8());
+        QJsonObject sett2 = d.object();
+        QVariantMap root_map = sett2.toVariantMap();
+        QVariantMap stat_map = root_map.value("ladder2").toMap();
+        QString ladder2x = stat_map.value("x").toString();
+        QString ladder2y = stat_map.value("y").toString();
+        ladder2= new ladder(ladder2x.toInt() - 1, ladder2y.toInt()- 3, ladder2x.toInt(), ladder2y.toInt());
+        ladder2->setPixmap((QPixmap("/home/eece435l/project_ja_9/images/ladder2.png")).scaled(80,270));
+        ladder2->setPos(170 + 65*ladder2x.toInt(), 590 - 65*ladder2y.toInt());
+    }
 
     int ladder3_topxrand = rand() % 8;
     int ladder3_topyrand = rand() % 7 + 3;
-
-    ladder3= new ladder(ladder3_topxrand + 2, ladder3_topyrand - 3, ladder3_topxrand, ladder3_topyrand);
-    ladder3->setPixmap((QPixmap("/home/eece435l/project_ja_9/images/ladder3.png")).scaled(149,210));
-    ladder3->setPos(230 + 65*ladder3_topxrand, 615 - 65*ladder3_topyrand);
+    if(is_random) {
+        ladder3= new ladder(ladder3_topxrand + 2, ladder3_topyrand - 3, ladder3_topxrand, ladder3_topyrand);
+        ladder3->setPixmap((QPixmap("/home/eece435l/project_ja_9/images/ladder3.png")).scaled(149,210));
+        ladder3->setPos(230 + 65*ladder3_topxrand, 615 - 65*ladder3_topyrand);
+    } else {
+        QString val;
+        QFile file;
+        file.setFileName("/home/eece435l/project_ja_9/users/snakes&ladders.json");
+        file.open(QIODevice::ReadOnly | QIODevice::Text);
+        val = file.readAll();
+        file.close();
+        QJsonDocument d = QJsonDocument::fromJson(val.toUtf8());
+        QJsonObject sett2 = d.object();
+        QVariantMap root_map = sett2.toVariantMap();
+        QVariantMap stat_map = root_map.value("ladder3").toMap();
+        QString ladder3x = stat_map.value("x").toString();
+        QString ladder3y = stat_map.value("y").toString();
+        ladder3= new ladder(ladder3x.toInt()+ 2, ladder3y.toInt() - 3, ladder3x.toInt(), ladder3y.toInt());
+        ladder3->setPixmap((QPixmap("/home/eece435l/project_ja_9/images/ladder3.png")).scaled(149,210));
+        ladder3->setPos(230 + 65*ladder3x.toInt(), 615 - 65*ladder3y.toInt());
+    }
 
 
     view = new QGraphicsView(this);
