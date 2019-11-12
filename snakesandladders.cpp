@@ -259,7 +259,6 @@ void snakesandladders::move_pins(int move1, int move2) {
     bool pin1_hitTheTop = false;
     bool pin2_hitTheTop = false;
 
-//    while(move1>0)
     for (int i = 0; i < move1; i++) {
         if (pin1_y == 9 && pin1_x == 0) {
             pin1_hitTheTop = true;
@@ -319,6 +318,14 @@ void snakesandladders::move_pins(int move1, int move2) {
 
     check_for_snakes_and_ladders();
     relocate();
+    if (pin1_x == 0 && pin1_y == 9) {
+        wins(1);
+    } else {
+        if (pin2_x == 0 && pin2_y == 9) {
+            wins(2);
+        }
+    }
+//    wins(1);
 }
 
 void snakesandladders::relocate() {
@@ -328,16 +335,16 @@ void snakesandladders::relocate() {
 
 void snakesandladders::check_for_snakes_and_ladders() {
 
-    int square_number_1;
-    int square_number_2;
+//    int square_number_1;
+//    int square_number_2;
 
-    if (pin1_y % 2 == 0) {
-        square_number_1 = pin1_y*10 + pin1_x + 1;
-    }
+//    if (pin1_y % 2 == 0) {
+//        square_number_1 = pin1_y*10 + pin1_x + 1;
+//    }
 
-    else {
-        square_number_1 = pin1_y*10 + 10 - pin1_x;
-    }
+//    else {
+//        square_number_1 = pin1_y*10 + 10 - pin1_x;
+//    }
 
     if (snake1->tx == pin1_x && snake1->ty == pin1_y) {
         pin1_x = snake1->bx;
@@ -345,45 +352,23 @@ void snakesandladders::check_for_snakes_and_ladders() {
         check_for_snakes_and_ladders();
     }
 
-//    if (snake1->head_square == square_number_1) {
-//        pin1_x = snake1->tail_square % 10 -1;
-//        pin1_y = snake1->tail_square / 10 ;
-//    }
-
     if (snake2->tx == pin1_x && snake2->ty == pin1_y) {
         pin1_x = snake2->bx;
         pin1_y = snake2->by;
         check_for_snakes_and_ladders();
     }
-//    if (snake2->head_square == square_number_1) {
-//        pin1_x = snake2->tail_square % 10 -1;
-//        pin1_y = snake2->tail_square / 10 ;
-//    }
 
     if (snake3->tx == pin1_x && snake3->ty == pin1_y) {
         pin1_x = snake3->bx;
         pin1_y = snake3->by;
         check_for_snakes_and_ladders();
     }
-//    if (snake3->head_square == square_number_1) {
-//        pin1_x = snake3->tail_square % 10 -1;
-//        pin1_y = snake3->tail_square / 10 ;
-//    }
 
     if (snake4->tx == pin1_x && snake4->ty == pin1_y) {
         pin1_x = snake4->bx;
         pin1_y = snake4->by;
         check_for_snakes_and_ladders();
     }
-//    if (snake4->head_square == square_number_1) {
-//        pin1_x = snake4->tail_square % 10 -1;
-//        pin1_y = snake4->tail_square / 10 ;
-//    }
-
-//    if (ladder1->bottom_square == square_number_1) {
-//        pin1_x = ladder1->top_square % 10 -1;
-//        pin1_y = ladder1->top_square / 10 ;
-//    }
 
     if (ladder1->bx == pin1_x && ladder1->by == pin1_y) {
         pin1_x = ladder1->tx;
@@ -391,11 +376,6 @@ void snakesandladders::check_for_snakes_and_ladders() {
         check_for_snakes_and_ladders();
     }
 
-
-//    if (ladder2->bottom_square == square_number_1) {
-//        pin1_x = ladder2->top_square % 10 -1;
-//        pin1_y = ladder2->top_square / 10 ;
-//    }
     if (ladder2->bx == pin1_x && ladder2->by == pin1_y) {
         pin1_x = ladder2->tx;
         pin1_y = ladder2->ty;
@@ -410,67 +390,43 @@ void snakesandladders::check_for_snakes_and_ladders() {
 
     //now same for pin2
 
-    if (pin2_y % 2 == 0) {
-        square_number_2 = pin2_y*10 + pin2_x + 1;
-    }
+//    if (pin2_y % 2 == 0) {
+//        square_number_2 = pin2_y*10 + pin2_x + 1;
+//    }
 
-    else {
-        square_number_2 = pin2_y*10 + 10 - pin2_x;
-    }
+//    else {
+//        square_number_2 = pin2_y*10 + 10 - pin2_x;
+//    }
 
     if (snake1->tx == pin2_x && snake1->ty == pin2_y) {
         pin2_x = snake1->bx;
         pin2_y = snake1->by;
         check_for_snakes_and_ladders();
     }
-//    if (snake1->head_square == square_number_2) {
-//        pin2_x = snake1->tail_square % 10 -1;
-//        pin2_y = snake1->tail_square / 10 ;
-//    }
 
     if (snake2->tx == pin2_x && snake2->ty == pin2_y) {
         pin2_x = snake2->bx;
         pin2_y = snake2->by;
         check_for_snakes_and_ladders();
     }
-//    if (snake2->head_square == square_number_2) {
-//        pin2_x = snake2->tail_square % 10 -1;
-//        pin2_y = snake2->tail_square / 10 ;
-//    }
 
     if (snake3->tx == pin2_x && snake3->ty == pin2_y) {
         pin2_x = snake3->bx;
         pin2_y = snake3->by;
         check_for_snakes_and_ladders();
     }
-//    if (snake3->head_square == square_number_2) {
-//        pin2_x = snake3->tail_square % 10 -1;
-//        pin2_y = snake3->tail_square / 10 ;
-//    }
 
     if (snake4->tx == pin2_x && snake4->ty == pin2_y) {
         pin2_x = snake4->bx;
         pin2_y = snake4->by;
         check_for_snakes_and_ladders();
     }
-//    if (snake4->head_square == square_number_2) {
-//        pin2_x = snake4->tail_square % 10 -1;
-//        pin2_y = snake4->tail_square / 10 ;
-//    }
 
-//    if (ladder1->bottom_square == square_number_2) {
-//        pin2_x = ladder1->top_square % 10 -1;
-//        pin2_y = ladder1->top_square / 10 ;
-//    }
     if (ladder1->bx == pin2_x && ladder1->by == pin2_y) {
         pin2_x = ladder1->tx;
         pin2_y = ladder1->ty;
     }
 
-//    if (ladder2->bottom_square == square_number_2) {
-//        pin2_x = ladder2->top_square % 10 -1;
-//        pin2_y = ladder2->top_square / 10 ;
-//    }
     if (ladder2->bx == pin2_x && ladder2->by == pin2_y) {
         pin2_x = ladder2->tx;
         pin2_y = ladder2->ty;
@@ -482,5 +438,46 @@ void snakesandladders::check_for_snakes_and_ladders() {
         pin2_y = ladder3->ty;
         check_for_snakes_and_ladders();
     }
+}
 
+void snakesandladders::wins(int winner) {
+    if(winner == 1) {
+        qWarning() <<user->username << " wins";
+        if(user->username != "Guest") {
+            QString val;
+            QFile file;
+            file.setFileName("/home/eece435l/project_ja_9/users/users.json");
+            file.open(QIODevice::ReadOnly | QIODevice::Text);
+            val = file.readAll();
+            file.close();
+            QJsonDocument d = QJsonDocument::fromJson(val.toUtf8());
+            QJsonObject sett2 = d.object();
+
+            QVariantMap root_map = sett2.toVariantMap();
+            QVariantMap stat_map = root_map.value(user->username).toMap();
+            QStringList inventory_list1 = stat_map.value("score1").toStringList();
+            if (inventory_list1.size() == 0) {
+                inventory_list1.append("1");
+            } else {
+                int new_score = inventory_list1.at(0).toInt() + 1;
+                inventory_list1[0] = QString::number(new_score);
+            }
+            stat_map.remove("score1");
+            stat_map.insert("score1", inventory_list1);
+            root_map.insert(user->username,stat_map);
+            sett2 = QJsonObject::fromVariantMap(root_map);
+            if (!file.open(QIODevice::WriteOnly)) {
+                    qWarning("Couldn't open save file.");
+            } else {
+                QJsonDocument saveDoc(sett2);
+                QString json_string = saveDoc.toJson();
+                file.write(json_string.toLocal8Bit());
+                file.close();
+            }
+        }
+    } else {
+        if(winner == 2) {
+            qWarning() << "Computer wins";
+        }
+    }
 }

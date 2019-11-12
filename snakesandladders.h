@@ -57,6 +57,7 @@ public slots:
     void check_for_snakes_and_ladders();
     void computer_turn();
     void who_starts();
+    void wins(int winner);
 };
 
 #endif // SNAKESANDLADDERS_H
