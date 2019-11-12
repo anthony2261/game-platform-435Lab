@@ -337,7 +337,7 @@ void snakesandladders::move_pins(int move1, int move2) {
         Label_Text->setText("Player 1 Wins");
         Label_Text->show();
         gameover = true;
-		wins(1)
+        wins(1);
     }
 
     else if (pin2_x == 0 && pin2_y == 9) {
@@ -349,7 +349,7 @@ void snakesandladders::move_pins(int move1, int move2) {
         Label_Text->setText("Computer Wins");
         Label_Text->show();
         gameover = true;
-		wins(2)
+        wins(2);
     }
 }
 
@@ -514,6 +514,7 @@ void snakesandladders::check_for_snakes_and_ladders() {
         pin2_y = ladder3->ty;
         check_for_snakes_and_ladders();
     }
+}
 
 void snakesandladders::wins(int winner) {
     if(winner == 1) {
