@@ -191,18 +191,17 @@ void snakesandladders::computer_turn() {
             Label_Text->setText(QString("The computer\n rolled %1 \n and %2 and \n picked %2").arg(rand1).arg(rand2));
             move_pins(rand1,rand2);
         }
-
-        if (!gameover) {
-            if (rand1 != rand2){
-                player_rolled = false;
-                player_picked = false;
-                Label_Turn->setText("Player 1 Turn");
-                PushButton_Roll->setEnabled(true);
-                PushButton_Computer->setEnabled(false);
-            }
-            else
-                PushButton_Computer->setEnabled(true);
-        }
+		if (!gameover) {
+        	if (rand1 != rand2){
+           		player_rolled = false;
+            	player_picked = false;
+            	Label_Turn->setText("Player 1 Turn");
+            	PushButton_Roll->setEnabled(true);
+            	PushButton_Computer->setEnabled(false);
+        	}
+        	else
+            	PushButton_Computer->setEnabled(true);
+		}
     }
 }
 
@@ -230,15 +229,16 @@ void snakesandladders::player_picked_die1() {
         move_pins(PushButton_Die1->text().toInt(), PushButton_Die2->text().toInt());
     }
 
-    if (!gameover){
-        if (PushButton_Die1->text().toInt() == PushButton_Die2->text().toInt()){
-            PushButton_Roll->setEnabled(true);
-        }
-        else {
-            Label_Turn->setText("Computer's Turn");
-            PushButton_Computer->setEnabled(true);
-            player_picked = true;
-        }
+	if (!gameover) {
+
+    	if (PushButton_Die1->text().toInt() == PushButton_Die2->text().toInt()){
+        	PushButton_Roll->setEnabled(true);
+    	}
+    	else {
+        	Label_Turn->setText("Computer's Turn");
+        	PushButton_Computer->setEnabled(true);
+        	player_picked = true;
+		}
     }
 }
 
@@ -250,16 +250,16 @@ void snakesandladders::player_picked_die2() {
 //        qWarning() << PushButton_Die2->text().toInt();
         move_pins(PushButton_Die2->text().toInt(), PushButton_Die1->text().toInt());
     }
-
-    if (!gameover){
-        if (PushButton_Die1->text().toInt() == PushButton_Die2->text().toInt()){
-            PushButton_Roll->setEnabled(true);
-        }
-        else {
-            Label_Turn->setText("Computer's Turn");
-            PushButton_Computer->setEnabled(true);
-            player_picked = true;
-        }
+	
+	if (!gameover) {
+    	if (PushButton_Die1->text().toInt() == PushButton_Die2->text().toInt()){
+        	PushButton_Roll->setEnabled(true);
+    	}
+    	else {
+        	Label_Turn->setText("Computer's Turn");
+        	PushButton_Computer->setEnabled(true);
+        	player_picked = true;
+			}
     }
 }
 
@@ -337,6 +337,7 @@ void snakesandladders::move_pins(int move1, int move2) {
         Label_Text->setText("Player 1 Wins");
         Label_Text->show();
         gameover = true;
+		wins(1)
     }
 
     else if (pin2_x == 0 && pin2_y == 9) {
@@ -348,6 +349,7 @@ void snakesandladders::move_pins(int move1, int move2) {
         Label_Text->setText("Computer Wins");
         Label_Text->show();
         gameover = true;
+		wins(2)
     }
 }
 
@@ -513,4 +515,44 @@ void snakesandladders::check_for_snakes_and_ladders() {
         check_for_snakes_and_ladders();
     }
 
+void snakesandladders::wins(int winner) {
+    if(winner == 1) {
+        qWarning() <<user->username << " wins";
+        if(user->username != "Guest") {
+            QString val;
+            QFile file;
+            file.setFileName("/home/eece435l/project_ja_9/users/users.json");
+            file.open(QIODevice::ReadOnly | QIODevice::Text);
+            val = file.readAll();
+            file.close();
+            QJsonDocument d = QJsonDocument::fromJson(val.toUtf8());
+            QJsonObject sett2 = d.object();
+
+            QVariantMap root_map = sett2.toVariantMap();
+            QVariantMap stat_map = root_map.value(user->username).toMap();
+            QStringList inventory_list1 = stat_map.value("score1").toStringList();
+            if (inventory_list1.size() == 0) {
+                inventory_list1.append("1");
+            } else {
+                int new_score = inventory_list1.at(0).toInt() + 1;
+                inventory_list1[0] = QString::number(new_score);
+            }
+            stat_map.remove("score1");
+            stat_map.insert("score1", inventory_list1);
+            root_map.insert(user->username,stat_map);
+            sett2 = QJsonObject::fromVariantMap(root_map);
+            if (!file.open(QIODevice::WriteOnly)) {
+                    qWarning("Couldn't open save file.");
+            } else {
+                QJsonDocument saveDoc(sett2);
+                QString json_string = saveDoc.toJson();
+                file.write(json_string.toLocal8Bit());
+                file.close();
+            }
+        }
+    } else {
+        if(winner == 2) {
+            qWarning() << "Computer wins";
+        }
+    }
 }
