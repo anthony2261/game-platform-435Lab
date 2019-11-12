@@ -13,6 +13,7 @@ snakesandladders::snakesandladders(User *user, int gID)
     pin2_y = 0;
     player_rolled = false;
     player_picked = false;
+    gameover = false;
     GridL = new QGridLayout;
     PushButton_WhoStarts = new QPushButton("Who Starts?");
     PushButton_Exit = new QPushButton("Exit");
@@ -190,15 +191,18 @@ void snakesandladders::computer_turn() {
             Label_Text->setText(QString("The computer\n rolled %1 \n and %2 and \n picked %2").arg(rand1).arg(rand2));
             move_pins(rand1,rand2);
         }
-        if (rand1 != rand2){
-            player_rolled = false;
-            player_picked = false;
-            Label_Turn->setText("Player 1 Turn");
-            PushButton_Roll->setEnabled(true);
-            PushButton_Computer->setEnabled(false);
+
+        if (!gameover) {
+            if (rand1 != rand2){
+                player_rolled = false;
+                player_picked = false;
+                Label_Turn->setText("Player 1 Turn");
+                PushButton_Roll->setEnabled(true);
+                PushButton_Computer->setEnabled(false);
+            }
+            else
+                PushButton_Computer->setEnabled(true);
         }
-        else
-            PushButton_Computer->setEnabled(true);
     }
 }
 
@@ -226,13 +230,15 @@ void snakesandladders::player_picked_die1() {
         move_pins(PushButton_Die1->text().toInt(), PushButton_Die2->text().toInt());
     }
 
-    if (PushButton_Die1->text().toInt() == PushButton_Die2->text().toInt()){
-        PushButton_Roll->setEnabled(true);
-    }
-    else {
-        Label_Turn->setText("Computer's Turn");
-        PushButton_Computer->setEnabled(true);
-        player_picked = true;
+    if (!gameover){
+        if (PushButton_Die1->text().toInt() == PushButton_Die2->text().toInt()){
+            PushButton_Roll->setEnabled(true);
+        }
+        else {
+            Label_Turn->setText("Computer's Turn");
+            PushButton_Computer->setEnabled(true);
+            player_picked = true;
+        }
     }
 }
 
@@ -245,13 +251,15 @@ void snakesandladders::player_picked_die2() {
         move_pins(PushButton_Die2->text().toInt(), PushButton_Die1->text().toInt());
     }
 
-    if (PushButton_Die1->text().toInt() == PushButton_Die2->text().toInt()){
-        PushButton_Roll->setEnabled(true);
-    }
-    else {
-        Label_Turn->setText("Computer's Turn");
-        PushButton_Computer->setEnabled(true);
-        player_picked = true;
+    if (!gameover){
+        if (PushButton_Die1->text().toInt() == PushButton_Die2->text().toInt()){
+            PushButton_Roll->setEnabled(true);
+        }
+        else {
+            Label_Turn->setText("Computer's Turn");
+            PushButton_Computer->setEnabled(true);
+            player_picked = true;
+        }
     }
 }
 
@@ -319,6 +327,28 @@ void snakesandladders::move_pins(int move1, int move2) {
 
     check_for_snakes_and_ladders();
     relocate();
+
+    if (pin1_x == 0 && pin1_y == 9) {
+        PushButton_Computer->hide();
+        PushButton_Roll->hide();
+        PushButton_Die1->hide();
+        PushButton_Die2->hide();
+        Label_Turn->hide();
+        Label_Text->setText("Player 1 Wins");
+        Label_Text->show();
+        gameover = true;
+    }
+
+    else if (pin2_x == 0 && pin2_y == 9) {
+        PushButton_Computer->hide();
+        PushButton_Roll->hide();
+        PushButton_Die1->hide();
+        PushButton_Die2->hide();
+        Label_Turn->hide();
+        Label_Text->setText("Computer Wins");
+        Label_Text->show();
+        gameover = true;
+    }
 }
 
 void snakesandladders::relocate() {

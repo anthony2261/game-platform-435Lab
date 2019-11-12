@@ -43,6 +43,7 @@ private:
     int gID;
     bool player_rolled;
     bool player_picked;
+    bool gameover;
     int pin1_x;
     int pin1_y;
     int pin2_x;
