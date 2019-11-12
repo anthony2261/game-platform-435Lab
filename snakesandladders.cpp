@@ -360,62 +360,30 @@ void snakesandladders::relocate() {
 
 void snakesandladders::check_for_snakes_and_ladders() {
 
-    int square_number_1;
-    int square_number_2;
-
-    if (pin1_y % 2 == 0) {
-        square_number_1 = pin1_y*10 + pin1_x + 1;
-    }
-
-    else {
-        square_number_1 = pin1_y*10 + 10 - pin1_x;
-    }
-
     if (snake1->tx == pin1_x && snake1->ty == pin1_y) {
         pin1_x = snake1->bx;
         pin1_y = snake1->by;
         check_for_snakes_and_ladders();
     }
 
-//    if (snake1->head_square == square_number_1) {
-//        pin1_x = snake1->tail_square % 10 -1;
-//        pin1_y = snake1->tail_square / 10 ;
-//    }
-
     if (snake2->tx == pin1_x && snake2->ty == pin1_y) {
         pin1_x = snake2->bx;
         pin1_y = snake2->by;
         check_for_snakes_and_ladders();
     }
-//    if (snake2->head_square == square_number_1) {
-//        pin1_x = snake2->tail_square % 10 -1;
-//        pin1_y = snake2->tail_square / 10 ;
-//    }
+
 
     if (snake3->tx == pin1_x && snake3->ty == pin1_y) {
         pin1_x = snake3->bx;
         pin1_y = snake3->by;
         check_for_snakes_and_ladders();
     }
-//    if (snake3->head_square == square_number_1) {
-//        pin1_x = snake3->tail_square % 10 -1;
-//        pin1_y = snake3->tail_square / 10 ;
-//    }
 
     if (snake4->tx == pin1_x && snake4->ty == pin1_y) {
         pin1_x = snake4->bx;
         pin1_y = snake4->by;
         check_for_snakes_and_ladders();
     }
-//    if (snake4->head_square == square_number_1) {
-//        pin1_x = snake4->tail_square % 10 -1;
-//        pin1_y = snake4->tail_square / 10 ;
-//    }
-
-//    if (ladder1->bottom_square == square_number_1) {
-//        pin1_x = ladder1->top_square % 10 -1;
-//        pin1_y = ladder1->top_square / 10 ;
-//    }
 
     if (ladder1->bx == pin1_x && ladder1->by == pin1_y) {
         pin1_x = ladder1->tx;
@@ -424,10 +392,6 @@ void snakesandladders::check_for_snakes_and_ladders() {
     }
 
 
-//    if (ladder2->bottom_square == square_number_1) {
-//        pin1_x = ladder2->top_square % 10 -1;
-//        pin1_y = ladder2->top_square / 10 ;
-//    }
     if (ladder2->bx == pin1_x && ladder2->by == pin1_y) {
         pin1_x = ladder2->tx;
         pin1_y = ladder2->ty;
@@ -442,67 +406,35 @@ void snakesandladders::check_for_snakes_and_ladders() {
 
     //now same for pin2
 
-    if (pin2_y % 2 == 0) {
-        square_number_2 = pin2_y*10 + pin2_x + 1;
-    }
-
-    else {
-        square_number_2 = pin2_y*10 + 10 - pin2_x;
-    }
-
     if (snake1->tx == pin2_x && snake1->ty == pin2_y) {
         pin2_x = snake1->bx;
         pin2_y = snake1->by;
         check_for_snakes_and_ladders();
     }
-//    if (snake1->head_square == square_number_2) {
-//        pin2_x = snake1->tail_square % 10 -1;
-//        pin2_y = snake1->tail_square / 10 ;
-//    }
 
     if (snake2->tx == pin2_x && snake2->ty == pin2_y) {
         pin2_x = snake2->bx;
         pin2_y = snake2->by;
         check_for_snakes_and_ladders();
     }
-//    if (snake2->head_square == square_number_2) {
-//        pin2_x = snake2->tail_square % 10 -1;
-//        pin2_y = snake2->tail_square / 10 ;
-//    }
 
     if (snake3->tx == pin2_x && snake3->ty == pin2_y) {
         pin2_x = snake3->bx;
         pin2_y = snake3->by;
         check_for_snakes_and_ladders();
     }
-//    if (snake3->head_square == square_number_2) {
-//        pin2_x = snake3->tail_square % 10 -1;
-//        pin2_y = snake3->tail_square / 10 ;
-//    }
 
     if (snake4->tx == pin2_x && snake4->ty == pin2_y) {
         pin2_x = snake4->bx;
         pin2_y = snake4->by;
         check_for_snakes_and_ladders();
     }
-//    if (snake4->head_square == square_number_2) {
-//        pin2_x = snake4->tail_square % 10 -1;
-//        pin2_y = snake4->tail_square / 10 ;
-//    }
 
-//    if (ladder1->bottom_square == square_number_2) {
-//        pin2_x = ladder1->top_square % 10 -1;
-//        pin2_y = ladder1->top_square / 10 ;
-//    }
     if (ladder1->bx == pin2_x && ladder1->by == pin2_y) {
         pin2_x = ladder1->tx;
         pin2_y = ladder1->ty;
     }
 
-//    if (ladder2->bottom_square == square_number_2) {
-//        pin2_x = ladder2->top_square % 10 -1;
-//        pin2_y = ladder2->top_square / 10 ;
-//    }
     if (ladder2->bx == pin2_x && ladder2->by == pin2_y) {
         pin2_x = ladder2->tx;
         pin2_y = ladder2->ty;

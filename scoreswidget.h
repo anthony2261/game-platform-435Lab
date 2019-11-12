@@ -30,6 +30,8 @@ private:
     QVBoxLayout *VerticalL;
     QGridLayout *GridL;
     QLabel *Label_Scores;
+    QLabel *User_Scores;
+    QLabel *Top_Score;
     QPushButton *PushButton_Exit;
     User *user;
     int gID;
