@@ -8,21 +8,18 @@ Cabo::Cabo(User *user, int gID)
     GridL = new QGridLayout;
     PushButton_Exit = new QPushButton("Exit");
     PushButton_Startgame = new QPushButton("Start Game");
-    Label_player1 = new QLabel("Player 1");
-    Label_player2 = new QLabel("Player 2");
-    Label_player3 = new QLabel("Player 3");
 
-    drawpile = new  QVector<CaboCard>;
-    discardpile = new  QVector<CaboCard>;
-    drawpile->append(CaboCard(0));
-    drawpile->append(CaboCard(0));
-    drawpile->append(CaboCard(13));
-    drawpile->append(CaboCard(13));
+    drawpile = new  QVector<CaboCard*>;
+    discardpile = new  QVector<CaboCard*>;
+    drawpile->append(new CaboCard(0));
+    drawpile->append(new CaboCard(0));
+    drawpile->append(new CaboCard(13));
+    drawpile->append(new CaboCard(13));
     for (int i=1;i<13;i++) {
-        drawpile->append(CaboCard(i));
-        drawpile->append(CaboCard(i));
-        drawpile->append(CaboCard(i));
-        drawpile->append(CaboCard(i));
+        drawpile->append(new CaboCard(i));
+        drawpile->append(new CaboCard(i));
+        drawpile->append(new CaboCard(i));
+        drawpile->append(new CaboCard(i));
     }
     plr1 = new CaboPlayer();
     plr2 = new CaboPlayer();
@@ -35,9 +32,9 @@ Cabo::Cabo(User *user, int gID)
 
     GridL->addWidget(PushButton_Startgame,0,0); // Hi anthony
     GridL->addWidget(PushButton_Exit,7,0);
-    GridL->addWidget(Label_player1,0,1);
-    GridL->addWidget(Label_player2,0,2);
-    GridL->addWidget(Label_player3,1,0);
+    GridL->setContentsMargins(0,0,900,200);
+    GridL->setVerticalSpacing(30);
+
     view->setLayout(GridL);
     view->setScene(this);
     view->show();

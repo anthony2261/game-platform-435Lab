@@ -21,8 +21,6 @@
 
 CaboCard::CaboCard(int number)
 {
-    pixmap = new QGraphicsPixmapItem();
-    pixmap->setPixmap((QPixmap(QString("/home/eece435l/project_ja_9/images/cards/card%1.png").arg(number))).scaled(50,150));
     this->number = number;
     if(number < 7 || number == 13) {
         this->choice = "none";
