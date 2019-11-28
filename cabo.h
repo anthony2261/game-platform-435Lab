@@ -27,6 +27,9 @@ private:
     QPushButton *PushButton_Exit;
     QPushButton *PushButton_Startgame;
     QLabel *Label_Text;
+    QLabel *Label_player1;
+    QLabel *Label_player2;
+    QLabel *Label_player3;
 
     QVector<CaboCard> *discardpile;
     QVector<CaboCard> *drawpile;
