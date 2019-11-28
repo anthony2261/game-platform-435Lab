@@ -9,7 +9,7 @@ class CaboPlayer : public QObject
     Q_OBJECT
 public:
     explicit CaboPlayer(QObject *parent = nullptr);
-    QVector<CaboCard> *cards;
+    QVector<CaboCard *> *cards;
 
 signals:
 

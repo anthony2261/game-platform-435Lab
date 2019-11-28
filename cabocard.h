@@ -2,15 +2,16 @@
 #define CABOCARD_H
 
 #include <QWidget>
+#include <QObject>
 #include <QtWidgets>
+#include <QGraphicsPixmapItem>
 
-class CaboCard
+class CaboCard : public QObject, public QGraphicsPixmapItem
 {
 public:
     //CaboCard();
     CaboCard(int number = 0);
     int number;
-    QGraphicsPixmapItem *pixmap;
     QString choice;
 };
 
