@@ -9,11 +9,12 @@ class CaboPlayer : public QObject
     Q_OBJECT
 public:
     explicit CaboPlayer(QObject *parent = nullptr);
-    QVector<CaboCard> *playerCards;
+    QVector<CaboCard> *cards;
 
 signals:
 
 public slots:
+    int Sum_of_Cards();
 };
 
 #endif // CABOPLAYER_H

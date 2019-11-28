@@ -2,8 +2,13 @@
 
 CaboPlayer::CaboPlayer(QObject *parent) : QObject(parent)
 {
-    for(int i = 0; i < 4; i++) {
-        CaboCard *card = new CaboCard();
-        playerCards->insert(i, *card);
+    cards = new QVector<CaboCard>;
+}
+
+int CaboPlayer::Sum_of_Cards(){
+    int sum=0;
+    for (auto i=cards->begin();i<cards->end();i++){
+        sum += i->number;
     }
+    return sum;
 }
