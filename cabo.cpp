@@ -33,7 +33,7 @@ Cabo::Cabo(User *user, int gID)
     view->setFixedHeight(700);
     this->setSceneRect(0,0,1100,800);
 
-    GridL->addWidget(PushButton_Startgame,0,0);
+    GridL->addWidget(PushButton_Startgame,0,0); // Hi anthony
     GridL->addWidget(PushButton_Exit,7,0);
     GridL->addWidget(Label_player1,0,1);
     GridL->addWidget(Label_player2,0,2);
