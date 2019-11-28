@@ -2,6 +2,7 @@
 #include "loggedwidget.h"
 #include "scoreswidget.h"
 #include "snakesandladders.h"
+#include "cabo.h"
 
 gamewidget::gamewidget(QWidget *parent,  User *user, int gID) : QWidget(parent)
 {
@@ -39,6 +40,11 @@ void gamewidget::play() {
     if (this->gID == 1){
         this->close();
         snakesandladders *g1scene = new snakesandladders(this->user, gID);
+    }
+
+    if (this->gID == 2){
+        this->close();
+        Cabo *g2scene = new Cabo(this->user, gID);
     }
 }
 

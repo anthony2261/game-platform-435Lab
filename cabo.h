@@ -10,6 +10,7 @@
 #include "caboplayer.h"
 #include "cabocard.h"
 #include <QtWidgets>
+#include <algorithm>
 
 class Cabo : public QGraphicsScene
 {
@@ -24,13 +25,14 @@ private:
     QGraphicsView *view;
     QGridLayout *GridL; //!< Grid
     QPushButton *PushButton_Exit;
-    QPushButton *PushButton_Computer;
+    QPushButton *PushButton_Startgame;
     QLabel *Label_Text;
-    QGraphicsPixmapItem *board;
-    QGraphicsPixmapItem *player1_pin;
-    QGraphicsPixmapItem *player2_pin;
+    QLabel *Label_player1;
+    QLabel *Label_player2;
+    QLabel *Label_player3;
 
     QVector<CaboCard> *discardpile;
+    QVector<CaboCard> *drawpile;
     CaboPlayer *plr1;
     CaboPlayer *plr2;
     CaboPlayer *plr3;
@@ -38,6 +40,8 @@ private:
 signals:
 
 public slots:
+    void start_game();
+    void playerturn(int player_number);
     void exit();
 
 };
