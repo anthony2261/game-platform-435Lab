@@ -9,6 +9,31 @@ Cabo::Cabo(User *user, int gID)
     PushButton_Exit = new QPushButton("Exit");
     PushButton_Startgame = new QPushButton("Start Game");
 
+    cat_img = new QGraphicsPixmapItem();
+    cat_img->setPixmap((QPixmap("/home/eece435l/project_ja_9/images/cabo/animals/cat.png")).scaled(120,120));
+    cat_img->setPos(950,300);
+    this->addItem(cat_img);
+
+    dog_img = new QGraphicsPixmapItem();
+    dog_img->setPixmap((QPixmap("/home/eece435l/project_ja_9/images/cabo/animals/dog.png")).scaled(120,120));
+    dog_img->setPos(230,300);
+    this->addItem(dog_img);
+
+    wolf_img = new QGraphicsPixmapItem();
+    wolf_img->setPixmap((QPixmap("/home/eece435l/project_ja_9/images/cabo/animals/wolf.png")).scaled(120,120));
+    wolf_img->setPos(600,30);
+    this->addItem(wolf_img);
+
+    player_img = new QGraphicsPixmapItem();
+    player_img->setPixmap((QPixmap("/home/eece435l/project_ja_9/images/cabo/animals/morty_face.png")).scaled(120,120));
+    player_img->setPos(600,600);
+    this->addItem(player_img);
+
+    card_back_img = new QGraphicsPixmapItem();
+    card_back_img->setPixmap((QPixmap("/home/eece435l/project_ja_9/images/cabo/cards/card_back_background.png")).scaled(70,95));
+    card_back_img->setPos(550,300);
+    this->addItem(card_back_img);
+
     drawpile = new  QVector<CaboCard*>;
     discardpile = new  QVector<CaboCard*>;
     drawpile->append(new CaboCard(0));
@@ -60,6 +85,12 @@ void Cabo::start_game(){
         drawpile->pop_front();
     }
 
+    PushButton_Startgame->hide();
+    display_cards();
+
+}
+
+void Cabo::display_cards() {
 
 }
 

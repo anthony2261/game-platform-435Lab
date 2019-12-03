@@ -27,6 +27,11 @@ private:
     QPushButton *PushButton_Exit;
     QPushButton *PushButton_Startgame;
     QLabel *Label_Text;
+    QGraphicsPixmapItem *cat_img;
+    QGraphicsPixmapItem *dog_img;
+    QGraphicsPixmapItem *wolf_img;
+    QGraphicsPixmapItem *player_img;
+    QGraphicsPixmapItem *card_back_img;
 
     QVector<CaboCard *> *discardpile;
     QVector<CaboCard *> *drawpile;
@@ -34,6 +39,7 @@ private:
     CaboPlayer *plr2;
     CaboPlayer *plr3;
 
+    void display_cards();
 signals:
 
 public slots:
