@@ -19,9 +19,11 @@
 //    }
 //}
 
-CaboCard::CaboCard(int number)
+CaboCard::CaboCard(int number, bool faceup)
 {
+//    this->setFlag(QGraphicsItem::ItemIsSelectable,true);
     this->number = number;
+    this->faceup = faceup;
     if(number < 7 || number == 13) {
         this->choice = "none";
     } else {
@@ -37,3 +39,6 @@ CaboCard::CaboCard(int number)
     }
 }
 
+void CaboCard::mouseReleaseEvent(QGraphicsSceneMouseEvent* event) {
+//    QMessageBox::information(NULL, "Information!", "Mouse release Detected!");
+  }

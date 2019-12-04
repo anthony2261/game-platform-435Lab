@@ -8,6 +8,12 @@ Cabo::Cabo(User *user, int gID)
     GridL = new QGridLayout;
     PushButton_Exit = new QPushButton("Exit");
     PushButton_Startgame = new QPushButton("Start Game");
+    PushButton_PickFromDraw = new QPushButton("Pick from draw pile");
+    PushButton_PickFromDiscard = new QPushButton("Pick from discard pile");
+    PushButton_CallCabo = new QPushButton("Call Cabo");
+    PushButton_ReplaceCard = new QPushButton("Replace card");
+    PushButton_UseSpecial = new QPushButton("");
+    TESTB = new QPushButton("TEST");
 
     cat_img = new QGraphicsPixmapItem();
     cat_img->setPixmap((QPixmap("/home/eece435l/project_ja_9/images/cabo/animals/cat.png")).scaled(120,120));
@@ -25,12 +31,16 @@ Cabo::Cabo(User *user, int gID)
     this->addItem(wolf_img);
 
     player_img = new QGraphicsPixmapItem();
-    player_img->setPixmap((QPixmap("/home/eece435l/project_ja_9/images/cabo/animals/morty_face.png")).scaled(120,120));
-    player_img->setPos(600,600);
+    if(user->gender == "f") {
+        player_img->setPixmap((QPixmap("/home/eece435l/project_ja_9/images/cabo/animals/diane.png")).scaled(120,120));
+    } else {
+        player_img->setPixmap((QPixmap("/home/eece435l/project_ja_9/images/cabo/animals/morty_face.png")).scaled(120,120));
+    }
+    player_img->setPos(600,650);
     this->addItem(player_img);
 
     card_back_img = new QGraphicsPixmapItem();
-    card_back_img->setPixmap((QPixmap("/home/eece435l/project_ja_9/images/cabo/cards/card_back_background.png")).scaled(70,95));
+    card_back_img->setPixmap((QPixmap("/home/eece435l/project_ja_9/images/cabo/cards/card_back_background.png")).scaled(80,105));
     card_back_img->setPos(550,300);
     this->addItem(card_back_img);
 
@@ -49,13 +59,25 @@ Cabo::Cabo(User *user, int gID)
     plr1 = new CaboPlayer();
     plr2 = new CaboPlayer();
     plr3 = new CaboPlayer();
+    plr4 = new CaboPlayer();
 
     view = new QGraphicsView(this);
     view->setFixedWidth(1100);
-    view->setFixedHeight(700);
+    view->setFixedHeight(800);
     this->setSceneRect(0,0,1100,800);
 
     GridL->addWidget(PushButton_Startgame,0,0); // Hi anthony
+    GridL->addWidget(PushButton_PickFromDraw,1,0);
+    GridL->addWidget(PushButton_PickFromDiscard,2,0);
+    GridL->addWidget(PushButton_CallCabo,3,0);
+    GridL->addWidget(PushButton_ReplaceCard,4,0);
+    GridL->addWidget(PushButton_UseSpecial,4,1);
+    GridL->addWidget(TESTB,7,1);
+    PushButton_PickFromDiscard->hide();
+    PushButton_PickFromDraw->hide();
+    PushButton_CallCabo->hide();
+    PushButton_ReplaceCard->hide();
+    PushButton_UseSpecial->hide();
     GridL->addWidget(PushButton_Exit,7,0);
     GridL->setContentsMargins(0,0,900,200);
     GridL->setVerticalSpacing(30);
@@ -64,10 +86,23 @@ Cabo::Cabo(User *user, int gID)
     view->setScene(this);
     view->show();
 
+    QObject::connect(PushButton_PickFromDraw, SIGNAL(clicked(bool)), this, SLOT(fromDraw()));
+    QObject::connect(TESTB, SIGNAL(clicked(bool)), this, SLOT(TESTF()));
+    QObject::connect(PushButton_PickFromDiscard, SIGNAL(clicked(bool)), this, SLOT(fromDiscard()));
+    QObject::connect(PushButton_CallCabo, SIGNAL(clicked(bool)), this, SLOT(calledCabo()));
     QObject::connect(PushButton_Exit, SIGNAL(clicked(bool)), this, SLOT(exit()));
     QObject::connect(PushButton_Startgame, SIGNAL(clicked(bool)), this, SLOT(start_game()));
+    QObject::connect(PushButton_ReplaceCard, SIGNAL(clicked(bool)), this, SLOT(replaceFromDraw()));
 }
 
+void Cabo::TESTF() {
+    QList<QGraphicsItem*> list = this->selectedItems();
+//    QMessageBox::information(NULL, "Information!", QString::number(list.size()));
+    if(list.size() > 0) {
+        CaboCard* selected = (CaboCard*) list.at(0);
+        QMessageBox::information(NULL, "Information!", QString::number(selected->number));
+    }
+}
 
 void Cabo::start_game(){
 
@@ -85,19 +120,156 @@ void Cabo::start_game(){
         drawpile->pop_front();
     }
 
+    for (int i=0;i<4;i++) {
+        plr4->cards->append(drawpile->front());
+        drawpile->pop_front();
+    }
+
     PushButton_Startgame->hide();
     display_cards();
 
+    discardpile->append(drawpile->front());
+    drawpile->pop_front();
+    place(5,discardpile->front());
+    PushButton_PickFromDiscard->show();
+    PushButton_PickFromDraw->show();
+    PushButton_CallCabo->show();
+
 }
 
-void Cabo::display_cards() {
+void Cabo::place(int plrnum, CaboCard * card, int pos) {
+    int y = 0;
+    int x = 0;
+    if(plrnum == 1) { // 600, 600
+        x += 600;
+        y += 550;
+    } else {
+        if (plrnum == 4) { // 950, 300
+            x += 800;
+            y += 350;
+        } else {
+            if (plrnum == 2) { //230, 300
+                x += 330;
+                y += 350;
+            } else { //600,30 (plr3)
+                if (plrnum == 3) {
+                    x += 450;
+                    y += 130;
+                } else { // middle
+                    x += 645;
+                    y += 300;
+                    card->faceup = true;
+                    if(discardpile->size() > 1) {
+//                        this->removeItem(discardpile->at(discardpile->size() - 2)); DOESNT WORK
+                    }
+                }
+            }
+        }
+    }
+    if(pos == -1) {
+        x -= 150;
+        y += 50;
+        card->faceup = true;
+    } else {
+        if(pos%2 == 0) {
+            x += 82*(pos/2);
+        } else {
+            y -= 107;
+            x += 82*(pos-1)/2;
+        }
+    }
 
+    if(card->faceup) {
+        card->setPixmap((QPixmap(QString("/home/eece435l/project_ja_9/images/cabo/cards/card%1.png").arg(card->number))).scaled(80,105));
+    } else {
+        card->setPixmap((QPixmap(QString("/home/eece435l/project_ja_9/images/cabo/cards/card_back_background.png"))).scaled(80,105));
+    }
+    card->setPos(x, y);
+    this->addItem(card);
+}
+void Cabo::display_cards() {
+    //p1
+    for(int i = 0; i < plr1->cards->size(); i++) {
+        place(1, plr1->cards->at(i), i);
+    }
+
+    //p2
+    for(int i = 0; i < plr2->cards->size(); i++) {
+        place(2, plr2->cards->at(i), i);
+    }
+
+    //p3
+    for(int i = 0; i < plr3->cards->size(); i++) {
+        place(3, plr3->cards->at(i), i);
+    }
+
+    //p4
+    for(int i = 0; i < plr4->cards->size(); i++) {
+        place(4, plr4->cards->at(i), i);
+    }
 }
 
 void Cabo::playerturn(int player_number) {
     if (player_number == 1) {
 
     }
+}
+
+void Cabo::fromDraw() {
+    CaboCard * drawn = drawpile->front();
+
+    PushButton_PickFromDiscard->hide();
+    PushButton_PickFromDraw->hide();
+    PushButton_CallCabo->hide();
+    PushButton_ReplaceCard->show();
+    if(drawn->choice == "none") {
+        PushButton_UseSpecial->setText("no special");
+        PushButton_UseSpecial->setEnabled(false);
+    } else {
+        PushButton_UseSpecial->setText(drawn->choice);
+        PushButton_UseSpecial->setEnabled(true);
+    }
+    PushButton_UseSpecial->show();
+    place(1,drawn,-1);
+    for(auto card=plr1->cards->begin();card<plr1->cards->end();card++) {
+        (*card)->setFlag(QGraphicsItem::ItemIsSelectable,true);
+    }
+}
+
+void Cabo::replaceFromDraw() {
+        QList<QGraphicsItem*> list = this->selectedItems();
+    //    QMessageBox::information(NULL, "Information!", QString::number(list.size()));
+        if(list.size() < 1) {
+//            CaboCard* selected = (CaboCard*) list.at(0);
+            QMessageBox::information(NULL, "Information!", "Must select a card!");
+        } else {
+            for(auto card=plr1->cards->begin();card<plr1->cards->end();card++) {
+                (*card)->setFlag(QGraphicsItem::ItemIsSelectable,false);
+            }
+            CaboCard * drawn = drawpile->front();
+            drawpile->pop_front();
+            CaboCard* selected = (CaboCard*) list.at(0);
+            int index = -1;
+            for (int i = 0; i < plr1->cards->size(); i++) {
+                if(plr1->cards->at(i) == selected) {
+                    index = i;
+                    break;
+                }
+            }
+
+            plr1->cards->replace(index, drawn);
+            drawn->faceup = false;
+            place(1,drawn,index);
+            place(5,selected);
+            discardpile->append(selected);
+
+        }
+}
+
+void Cabo::fromDiscard() {
+}
+
+void Cabo::calledCabo() {
 }
 
 void Cabo::exit() {

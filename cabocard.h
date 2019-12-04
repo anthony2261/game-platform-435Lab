@@ -10,9 +10,11 @@ class CaboCard : public QObject, public QGraphicsPixmapItem
 {
 public:
     //CaboCard();
-    CaboCard(int number = 0);
+    CaboCard(int number = 0, bool faceup = false);
     int number;
     QString choice;
+    bool faceup;
+    void mouseReleaseEvent(QGraphicsSceneMouseEvent* event);
 };
 
 #endif // CABOCARD_H

@@ -18,6 +18,7 @@ class Cabo : public QGraphicsScene
 public:
     Cabo(User *user = new User(nullptr, "Guest", "Guest"), int gID = 2);
 
+    void place(int plrnum, CaboCard *card, int pos = 0);
 private:
     User *user;
     int gID;
@@ -26,6 +27,13 @@ private:
     QGridLayout *GridL; //!< Grid
     QPushButton *PushButton_Exit;
     QPushButton *PushButton_Startgame;
+    QPushButton *PushButton_PickFromDraw;
+    QPushButton *PushButton_PickFromDiscard;
+    QPushButton *PushButton_CallCabo;
+    QPushButton *PushButton_ReplaceCard;
+    QPushButton *PushButton_UseSpecial;
+    QPushButton *TESTB;
+
     QLabel *Label_Text;
     QGraphicsPixmapItem *cat_img;
     QGraphicsPixmapItem *dog_img;
@@ -38,6 +46,7 @@ private:
     CaboPlayer *plr1;
     CaboPlayer *plr2;
     CaboPlayer *plr3;
+    CaboPlayer *plr4;
 
     void display_cards();
 signals:
@@ -47,6 +56,11 @@ public slots:
     void playerturn(int player_number);
     void exit();
 
+    void fromDraw();
+    void fromDiscard();
+    void calledCabo();
+    void TESTF();
+    void replaceFromDraw();
 };
 
 #endif // CABO_H
