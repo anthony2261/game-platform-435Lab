@@ -106,7 +106,7 @@ Cabo::Cabo(User *user, int gID)
     GridL->addWidget(PushButton_Swap,8,0);
     GridL->addWidget(PushButton_SwapWith,8,1);
     GridL->addWidget(Label_Text,9,0);
-    //GridL->addWidget(TESTB,9,1);
+    GridL->addWidget(TESTB,9,1);
     GridL->addWidget(PushButton_EndTurn,10,1);
     PushButton_PickFromDiscard->hide();
     PushButton_PickFromDraw->hide();
@@ -150,7 +150,6 @@ Cabo::Cabo(User *user, int gID)
 
 void Cabo::TESTF() {
     QList<QGraphicsItem*> list = this->selectedItems();
-//    QMessageBox::information(NULL, "Information!", QString::number(list.size()));
     if(list.size() > 0) {
         CaboCard* selected = (CaboCard*) list.at(0);
         QMessageBox::information(NULL, "Information!", QString::number(selected->number));
@@ -279,7 +278,7 @@ void Cabo::computerTurn() {
             drawn->faceup = false;
             place(2,drawn,index);
             if (discardpile->size() > 0)
-                discardpile->at(discardpile->size()-1)->hide();
+                discardpile->at(0)->hide();
             discardpile->push_front(previous);
             place(5,previous);
             Label_Text->setText(QString("The cat drew\n from pile and\n replaced with \n card n^ %1").arg(index + 1));
@@ -291,7 +290,7 @@ void Cabo::computerTurn() {
             drawn->faceup = false;
             place(3,drawn,index);
             if (discardpile->size() > 0)
-                discardpile->at(discardpile->size()-1)->hide();
+                discardpile->at(0)->hide();
             discardpile->push_front(previous);
             place(5,previous);
             Label_Text->setText(QString("The wolf drew\n from pile and\n replaced with \n card n^ %1").arg(index + 1));
@@ -303,7 +302,7 @@ void Cabo::computerTurn() {
             drawn->faceup = false;
             place(4,drawn,index);
             if (discardpile->size() > 0)
-                discardpile->at(discardpile->size()-1)->hide();
+                discardpile->at(0)->hide();
             discardpile->push_front(previous);
             place(5,previous);
             Label_Text->setText(QString("The donkey drew\n from pile and\n replaced with \n card n^ %1").arg(index + 1));
@@ -367,7 +366,7 @@ void Cabo::replace() {
             drawn->faceup = false;
             place(1,drawn,index);
             if (discardpile->size() > 0)
-                discardpile->at(discardpile->size()-1)->hide();
+                discardpile->at(0)->hide();
             discardpile->push_front(selected);
             place(5,selected);
         }
@@ -402,7 +401,7 @@ void Cabo::replace() {
 //            drawn->faceup = false;
 //            place(1,drawn,index);
 //            if (discardpile->size() > 0)
-//                discardpile->at(discardpile->size()-1)->hide();
+//                discardpile->at(0)->hide();
 //            discardpile->push_front(selected);
 //            place(5,selected);
 //        }
@@ -419,7 +418,7 @@ void Cabo::useSpecial() {
     PushButton_DiscardFromDraw->hide();
 
     CaboCard * drawn = CardInPlay;
-    discardpile->at(discardpile->size()-1)->hide();
+    discardpile->at(0)->hide();
     discardpile->push_front(drawn);
     place(5,drawn);
     if(drawn->choice == "peek") {
@@ -573,7 +572,7 @@ void Cabo::discardFromDraw() {
         (*card)->setFlag(QGraphicsItem::ItemIsSelectable, false);
     }
     CaboCard * drawn = CardInPlay;
-    discardpile->at(discardpile->size()-1)->hide();
+    discardpile->at(0)->hide();
     discardpile->push_front(drawn);
     place(5,drawn);
     PushButton_PickFromDiscard->hide();
@@ -587,6 +586,9 @@ void Cabo::discardFromDraw() {
 void Cabo::fromDiscard() {
     CaboCard * drawn = discardpile->front();
     discardpile->pop_front();
+    if(discardpile->size() > 0) {
+        discardpile->at(0)->show();
+    }
     CardInPlay = drawn;
     PushButton_PickFromDiscard->hide();
     PushButton_PickFromDraw->hide();
@@ -594,7 +596,8 @@ void Cabo::fromDiscard() {
     PushButton_UseSpecial->hide();
     PushButton_ReplaceCard->show();
 
-    place(1,drawn,-1);
+
+    place(1,drawn,-1); // commented out so that discard pile doesnt look empty
     for(auto card=plr1->cards->begin();card<plr1->cards->end();card++) {
         (*card)->setFlag(QGraphicsItem::ItemIsSelectable,true);
     }
