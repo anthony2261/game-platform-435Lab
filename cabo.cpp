@@ -14,6 +14,7 @@ Cabo::Cabo(User *user, int gID)
     GridL = new QGridLayout;
     PushButton_Exit = new QPushButton("Exit");
     PushButton_Startgame = new QPushButton("Start Game");
+    PushButton_Ready = new QPushButton("Ready");
     PushButton_PickFromDraw = new QPushButton("Pick from draw pile");
     PushButton_PickFromDiscard = new QPushButton("Pick from discard pile");
     PushButton_CallCabo = new QPushButton("Call Cabo");
@@ -31,7 +32,7 @@ Cabo::Cabo(User *user, int gID)
 
     cat_img = new QGraphicsPixmapItem();
     cat_img->setPixmap((QPixmap("/home/eece435l/project_ja_9/images/cabo/animals/cat.png")).scaled(120,120));
-    cat_img->setPos(950,300);
+    cat_img->setPos(960,300);
     this->addItem(cat_img);
 
     dog_img = new QGraphicsPixmapItem();
@@ -41,7 +42,7 @@ Cabo::Cabo(User *user, int gID)
 
     wolf_img = new QGraphicsPixmapItem();
     wolf_img->setPixmap((QPixmap("/home/eece435l/project_ja_9/images/cabo/animals/wolf.png")).scaled(120,120));
-    wolf_img->setPos(600,30);
+    wolf_img->setPos(610,30);
     this->addItem(wolf_img);
 
     player_img = new QGraphicsPixmapItem();
@@ -50,7 +51,7 @@ Cabo::Cabo(User *user, int gID)
     } else {
         player_img->setPixmap((QPixmap("/home/eece435l/project_ja_9/images/cabo/animals/morty_face.png")).scaled(120,120));
     }
-    player_img->setPos(600,650);
+    player_img->setPos(610,650);
     this->addItem(player_img);
 
     card_back_img = new QGraphicsPixmapItem();
@@ -90,8 +91,9 @@ Cabo::Cabo(User *user, int gID)
     //6  peek
     //7  spy
     //8  swap
-    //9 text
-    //10  exit                     Testbutton
+    //9  text
+    //10 ready
+    //11  exit                 endturn    Testbutton
 
     GridL->addWidget(PushButton_Startgame,0,0); // Hi anthony
     GridL->addWidget(PushButton_PickFromDraw,1,0);
@@ -106,8 +108,9 @@ Cabo::Cabo(User *user, int gID)
     GridL->addWidget(PushButton_Swap,8,0);
     GridL->addWidget(PushButton_SwapWith,8,1);
     GridL->addWidget(Label_Text,9,0);
-    //GridL->addWidget(TESTB,9,1);
-    GridL->addWidget(PushButton_EndTurn,10,1);
+    GridL->addWidget(PushButton_Ready,10,0);
+    //GridL->addWidget(TESTB,11,2);
+    GridL->addWidget(PushButton_EndTurn,11,1);
     PushButton_PickFromDiscard->hide();
     PushButton_PickFromDraw->hide();
     PushButton_CallCabo->hide();
@@ -120,8 +123,9 @@ Cabo::Cabo(User *user, int gID)
     PushButton_SwapWith->hide();
     PushButton_DiscardFromDraw->hide();
     PushButton_EndTurn->hide();
+    PushButton_Ready->hide();
     Label_Text->hide();
-    GridL->addWidget(PushButton_Exit,10,0);
+    GridL->addWidget(PushButton_Exit,11,0);
     GridL->setContentsMargins(0,0,900,200);
     GridL->setVerticalSpacing(30);
 
@@ -144,6 +148,7 @@ Cabo::Cabo(User *user, int gID)
     QObject::connect(PushButton_SwapWith, SIGNAL(clicked(bool)), this, SLOT(swap_with()));
     QObject::connect(PushButton_DiscardFromDraw, SIGNAL(clicked(bool)), this, SLOT(discardFromDraw()));
     QObject::connect(PushButton_EndTurn, SIGNAL(clicked(bool)), this, SLOT(computerTurn()));
+    QObject::connect(PushButton_Ready, SIGNAL(clicked(bool)), this, SLOT(ready()));
 
 
 }
@@ -179,7 +184,26 @@ void Cabo::start_game(){
     }
 
     PushButton_Startgame->hide();
+    PushButton_Ready->show();
     display_cards();
+
+    plr1->cards->at(0)->faceup = true;
+    place(1, plr1->cards->at(0), 0);
+    plr1->cards->at(2)->faceup = true;
+    place(1, plr1->cards->at(2), 2);
+//    QTime dieTime = QTime::currentTime().addSecs(5);
+//    while (QTime::currentTime() < dieTime) {
+//        QCoreApplication::processEvents(QEventLoop::AllEvents, 100);
+//    }
+
+}
+
+void Cabo::ready() {
+    PushButton_Ready->hide();
+    plr1->cards->at(0)->faceup = false;
+    place(1, plr1->cards->at(0), 0);
+    plr1->cards->at(2)->faceup = false;
+    place(1, plr1->cards->at(2), 2);
 
     discardpile->push_front(drawpile->front());
     drawpile->pop_front();
@@ -187,20 +211,6 @@ void Cabo::start_game(){
     PushButton_PickFromDiscard->show();
     PushButton_PickFromDraw->show();
     PushButton_CallCabo->show();
-
-    plr1->cards->at(0)->faceup = true;
-    place(1, plr1->cards->at(0), 0);
-    plr1->cards->at(1)->faceup = true;
-    place(1, plr1->cards->at(1), 1);
-    QTime dieTime = QTime::currentTime().addSecs(5);
-    while (QTime::currentTime() < dieTime) {
-        QCoreApplication::processEvents(QEventLoop::AllEvents, 100);
-    }
-    plr1->cards->at(0)->faceup = false;
-    place(1, plr1->cards->at(0), 0);
-    plr1->cards->at(1)->faceup = false;
-    place(1, plr1->cards->at(1), 1);
-
 }
 
 void Cabo::place(int plrnum, CaboCard * card, int pos) {
