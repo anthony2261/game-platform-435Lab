@@ -188,6 +188,19 @@ void Cabo::start_game(){
     PushButton_PickFromDraw->show();
     PushButton_CallCabo->show();
 
+    plr1->cards->at(0)->faceup = true;
+    place(1, plr1->cards->at(0), 0);
+    plr1->cards->at(1)->faceup = true;
+    place(1, plr1->cards->at(1), 1);
+    QTime dieTime = QTime::currentTime().addSecs(5);
+    while (QTime::currentTime() < dieTime) {
+        QCoreApplication::processEvents(QEventLoop::AllEvents, 100);
+    }
+    plr1->cards->at(0)->faceup = false;
+    place(1, plr1->cards->at(0), 0);
+    plr1->cards->at(1)->faceup = false;
+    place(1, plr1->cards->at(1), 1);
+
 }
 
 void Cabo::place(int plrnum, CaboCard * card, int pos) {
@@ -613,6 +626,9 @@ void Cabo::discardFromDraw() {
 void Cabo::fromDiscard() {
     CaboCard * drawn = discardpile->front();
     discardpile->pop_front();
+    if (discardpile->size() > 0) {
+        discardpile->at(0)->show();
+    }
     CardInPlay = drawn;
     PushButton_PickFromDiscard->hide();
     PushButton_PickFromDraw->hide();
@@ -681,12 +697,13 @@ void Cabo::refill_draw() {
     discardpile->at(0)->hide();
 
     while (discardpile->size()>1){
-        drawpile->append(discardpile->at(0));
-        discardpile->at(0)->hide();
-        discardpile->pop_front();
+        drawpile->append(discardpile->at(discardpile->size() - 1));
+        discardpile->at(discardpile->size() - 1)->hide();
+        discardpile->pop_back();
     }
 
     discardpile->at(0)->show();
+    std::random_shuffle(drawpile->begin(), drawpile->end());
 }
 
 void Cabo::exit() {
