@@ -30,8 +30,13 @@ private:
     QPushButton *PushButton_PickFromDraw;
     QPushButton *PushButton_PickFromDiscard;
     QPushButton *PushButton_CallCabo;
-    QPushButton *PushButton_ReplaceCard;
+    QPushButton *PushButton_ReplaceCardFromDraw;
+    QPushButton *PushButton_DiscardFromDraw;
     QPushButton *PushButton_UseSpecial;
+    QPushButton *PushButton_Peek;
+    QPushButton *PushButton_Spy;
+    QPushButton *PushButton_Swap;
+
     QPushButton *TESTB;
 
     QLabel *Label_Text;
@@ -61,6 +66,11 @@ public slots:
     void calledCabo();
     void TESTF();
     void replaceFromDraw();
+    void discardFromDraw();
+    void useSpecial();
+    void peek();
+    void spy();
+    void swap();
 };
 
 #endif // CABO_H
