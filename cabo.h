@@ -30,12 +30,15 @@ private:
     QPushButton *PushButton_PickFromDraw;
     QPushButton *PushButton_PickFromDiscard;
     QPushButton *PushButton_CallCabo;
-    QPushButton *PushButton_ReplaceCardFromDraw;
+    QPushButton *PushButton_ReplaceCard;
+    //QPushButton *PushButton_ReplaceCardFromDiscard;
     QPushButton *PushButton_DiscardFromDraw;
     QPushButton *PushButton_UseSpecial;
     QPushButton *PushButton_Peek;
     QPushButton *PushButton_Spy;
     QPushButton *PushButton_Swap;
+    QPushButton *PushButton_SwapWith;
+    QPushButton *PushButton_EndTurn;
 
     QPushButton *TESTB;
 
@@ -58,19 +61,22 @@ signals:
 
 public slots:
     void start_game();
-    void playerturn(int player_number);
+    void computerTurn();
     void exit();
 
     void fromDraw();
     void fromDiscard();
     void calledCabo();
     void TESTF();
-    void replaceFromDraw();
+    void replace();
+    //void replaceFromDraw();
+    //void replaceFromDiscard();
     void discardFromDraw();
     void useSpecial();
     void peek();
     void spy();
     void swap();
+    void swap_with();
 };
 
 #endif // CABO_H
