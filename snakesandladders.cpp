@@ -1,9 +1,5 @@
 #include "snakesandladders.h"
 #include "gamewidget.h"
-#include "square.h"
-//#include <vector>
-//#include <QtTest/QTest>
-//#include <unistd.h>
 
 snakesandladders::snakesandladders(User *user, int gID)
 {
@@ -288,6 +284,10 @@ void snakesandladders::who_starts() {
     PushButton_WhoStarts->hide();
     int rand1 = rand() % 6 + 1;
     int rand2 = rand() % 6 + 1;
+    while(rand1 == rand2) {
+        rand1 = rand() % 6 + 1;
+        rand2 = rand() % 6 + 1;
+    }
     Label_Text->setText(QString("you rolled\n %1 and \n computer\nrolled %2 ").arg(rand1).arg(rand2));
     Label_Text->show();
     if (rand1 > rand2) {
@@ -503,45 +503,53 @@ void snakesandladders::check_for_snakes_and_ladders() {
     if (snake1->tx == pin1_x && snake1->ty == pin1_y) {
         pin1_x = snake1->bx;
         pin1_y = snake1->by;
-        check_for_snakes_and_ladders();
+//        check_for_snakes_and_ladders();
+        QMessageBox::information(NULL, "Snake!", "Bad practice: Skipping unit testing can lead to very buggy long code");
     }
 
     if (snake2->tx == pin1_x && snake2->ty == pin1_y) {
         pin1_x = snake2->bx;
         pin1_y = snake2->by;
-        check_for_snakes_and_ladders();
+//        check_for_snakes_and_ladders();
+        QMessageBox::information(NULL, "Snake!", "Bad practice: Not using version control can lead to making irreversible mistakes");
     }
 
 
     if (snake3->tx == pin1_x && snake3->ty == pin1_y) {
         pin1_x = snake3->bx;
         pin1_y = snake3->by;
-        check_for_snakes_and_ladders();
+//        check_for_snakes_and_ladders();
+        QMessageBox::information(NULL, "Snake!", "Bad practice: Not documenting your code can make programmers, including yourself, have a hard time working with the code!");
     }
 
     if (snake4->tx == pin1_x && snake4->ty == pin1_y) {
         pin1_x = snake4->bx;
         pin1_y = snake4->by;
-        check_for_snakes_and_ladders();
+//        check_for_snakes_and_ladders();
+        QMessageBox::information(NULL, "Snake!", "Bad practice: Optimizing code prematurely can turn your code into spaghetti code");
     }
 
     if (ladder1->bx == pin1_x && ladder1->by == pin1_y) {
         pin1_x = ladder1->tx;
         pin1_y = ladder1->ty;
-        check_for_snakes_and_ladders();
+//        check_for_snakes_and_ladders();
+        QMessageBox::information(NULL, "Ladder!", "Good practice: Unit testing detected a bug to be fixed. Disaster evaded!");
+
     }
 
 
     if (ladder2->bx == pin1_x && ladder2->by == pin1_y) {
         pin1_x = ladder2->tx;
         pin1_y = ladder2->ty;
-        check_for_snakes_and_ladders();
+//        check_for_snakes_and_ladders();
+        QMessageBox::information(NULL, "Ladder!", "Good practice: Version control allowed you to reverse the addition of buggy code. Clean working code is back!");
     }
 
     if (ladder3->bx == pin1_x && ladder3->by == pin1_y) {
         pin1_x = ladder3->tx;
         pin1_y = ladder3->ty;
-        check_for_snakes_and_ladders();
+//        check_for_snakes_and_ladders();
+        QMessageBox::information(NULL, "Ladder!", "Good practice: A bug was found in your old code. Luckily, it was documented and full of comments.");
     }
 
     //now same for pin2
@@ -549,42 +557,49 @@ void snakesandladders::check_for_snakes_and_ladders() {
     if (snake1->tx == pin2_x && snake1->ty == pin2_y) {
         pin2_x = snake1->bx;
         pin2_y = snake1->by;
-        check_for_snakes_and_ladders();
+//        check_for_snakes_and_ladders();
+        QMessageBox::information(NULL, "Snake!", "Bad practice: Skipping unit testing can lead to very buggy long code");
     }
 
     if (snake2->tx == pin2_x && snake2->ty == pin2_y) {
         pin2_x = snake2->bx;
         pin2_y = snake2->by;
-        check_for_snakes_and_ladders();
+//        check_for_snakes_and_ladders();
+        QMessageBox::information(NULL, "Snake!", "Bad practice: Not using version control can lead to making irreversible mistakes");
     }
 
     if (snake3->tx == pin2_x && snake3->ty == pin2_y) {
         pin2_x = snake3->bx;
         pin2_y = snake3->by;
-        check_for_snakes_and_ladders();
+//        check_for_snakes_and_ladders();
+        QMessageBox::information(NULL, "Snake!", "Bad practice: Not documenting your code can make programmers, including yourself, have a hard time working with the code!");
     }
 
     if (snake4->tx == pin2_x && snake4->ty == pin2_y) {
         pin2_x = snake4->bx;
         pin2_y = snake4->by;
-        check_for_snakes_and_ladders();
+//        check_for_snakes_and_ladders();
+        QMessageBox::information(NULL, "Snake!", "Bad practice: Optimizing code prematurely can turn your code into spaghetti code");
     }
 
     if (ladder1->bx == pin2_x && ladder1->by == pin2_y) {
         pin2_x = ladder1->tx;
         pin2_y = ladder1->ty;
+        QMessageBox::information(NULL, "Ladder!", "Good practice: Unit testing detected a bug to be fixed. Disaster evaded!");
     }
 
     if (ladder2->bx == pin2_x && ladder2->by == pin2_y) {
         pin2_x = ladder2->tx;
         pin2_y = ladder2->ty;
-        check_for_snakes_and_ladders();
+//        check_for_snakes_and_ladders();
+        QMessageBox::information(NULL, "Ladder!", "Good practice: Version control allowed you to reverse the addition of buggy code. Clean working code is back!");
     }
 
     if (ladder3->bx == pin2_x && ladder3->by == pin2_y) {
         pin2_x = ladder3->tx;
         pin2_y = ladder3->ty;
-        check_for_snakes_and_ladders();
+//        check_for_snakes_and_ladders();
+        QMessageBox::information(NULL, "Ladder!", "Good practice: A bug was found in your old code. Luckily, it was documented and full of comments.");
     }
 }
 

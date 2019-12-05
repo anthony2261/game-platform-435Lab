@@ -13,7 +13,7 @@
 
 /**
  * @brief The scoreswidget displays the history of the scores of the selected game of the user and has an "Exit"
- * button to go back to the gamewidget.
+ * button to go back to the gamewidget. Guests need to log in to view scores.
  *
  */
 class scoreswidget:public QWidget

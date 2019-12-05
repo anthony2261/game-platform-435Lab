@@ -9,7 +9,6 @@ HEADERS += \
     gamewidget.h \
     scoreswidget.h \
     snakesandladders.h \
-    square.h \
     snake.h \
     ladder.h \
     cabo.h \
@@ -25,7 +24,6 @@ SOURCES += \
     gamewidget.cpp \
     scoreswidget.cpp \
     snakesandladders.cpp \
-    square.cpp \
     snake.cpp \
     ladder.cpp \
     cabo.cpp \
