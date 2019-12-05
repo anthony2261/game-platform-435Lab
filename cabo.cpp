@@ -649,10 +649,11 @@ void Cabo::calledCabo() {
     int winner, min, sum1, sum2, sum3, sum4;
     
     winner = 1;
-    min, sum1 = plr1->Sum_of_Cards();
+    sum1 = plr1->Sum_of_Cards();
     sum2 = plr2->Sum_of_Cards();
     sum3 = plr3->Sum_of_Cards();
     sum4 = plr4->Sum_of_Cards();
+    min = sum1;
     
     if (plr2->Sum_of_Cards() < min) {
         winner = 2;
