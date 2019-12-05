@@ -77,6 +77,7 @@ public slots:
     void spy();
     void swap();
     void swap_with();
+    void refill_draw();
 };
 
 #endif // CABO_H

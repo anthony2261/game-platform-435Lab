@@ -106,7 +106,7 @@ Cabo::Cabo(User *user, int gID)
     GridL->addWidget(PushButton_Swap,8,0);
     GridL->addWidget(PushButton_SwapWith,8,1);
     GridL->addWidget(Label_Text,9,0);
-    GridL->addWidget(TESTB,9,1);
+    //GridL->addWidget(TESTB,9,1);
     GridL->addWidget(PushButton_EndTurn,10,1);
     PushButton_PickFromDiscard->hide();
     PushButton_PickFromDraw->hide();
@@ -150,6 +150,7 @@ Cabo::Cabo(User *user, int gID)
 
 void Cabo::TESTF() {
     QList<QGraphicsItem*> list = this->selectedItems();
+//    QMessageBox::information(NULL, "Information!", QString::number(list.size()));
     if(list.size() > 0) {
         CaboCard* selected = (CaboCard*) list.at(0);
         QMessageBox::information(NULL, "Information!", QString::number(selected->number));
@@ -270,6 +271,9 @@ void Cabo::computerTurn() {
     Label_Text->show();
 
     for (int computerNumber = 1; computerNumber <= 3; computerNumber++) {
+        if (drawpile->size() == 0){
+            refill_draw();
+        }
        CaboCard * drawn = drawpile->front(); // always pick from draw pile
        if (computerNumber == 1) {
             int index = rand() % 4;
@@ -281,7 +285,7 @@ void Cabo::computerTurn() {
                 discardpile->at(0)->hide();
             discardpile->push_front(previous);
             place(5,previous);
-            Label_Text->setText(QString("The cat drew\n from pile and\n replaced with \n card n^ %1").arg(index + 1));
+            Label_Text->setText(QString("The dog drew\n from pile and\n replaced with \n card n^ %1").arg(index + 1));
        }
        if (computerNumber == 2) {
             int index = rand() % 4;
@@ -305,10 +309,14 @@ void Cabo::computerTurn() {
                 discardpile->at(0)->hide();
             discardpile->push_front(previous);
             place(5,previous);
-            Label_Text->setText(QString("The donkey drew\n from pile and\n replaced with \n card n^ %1").arg(index + 1));
+            Label_Text->setText(QString("The cat drew\n from pile and\n replaced with \n card n^ %1").arg(index + 1));
        }
 
        drawpile->pop_front();
+       QTime dieTime = QTime::currentTime().addSecs(5);
+       while (QTime::currentTime() < dieTime) {
+           QCoreApplication::processEvents(QEventLoop::AllEvents, 100);
+       }
 
     }
 
@@ -319,6 +327,9 @@ void Cabo::computerTurn() {
 }
 
 void Cabo::fromDraw() {
+    if (drawpile->size() == 0){
+        refill_draw();
+    }
     CaboCard * drawn = drawpile->front();
     drawpile ->pop_front();
     CardInPlay = drawn;
@@ -503,8 +514,8 @@ void Cabo::swap() {
         return;
     }
 
-    CaboCard* selected = (CaboCard*) list.at(0);
-    CardToSwap = selected;
+    CardToSwap = (CaboCard*) list.at(0);
+
     PushButton_Swap->hide();
     PushButton_SwapWith->show();
     for(auto card=plr1->cards->begin();card<plr1->cards->end();card++) {
@@ -518,6 +529,13 @@ void Cabo::swap() {
     }
     for(auto card=plr4->cards->begin();card<plr4->cards->end();card++) {
         (*card)->setFlag(QGraphicsItem::ItemIsSelectable, true);
+    }
+
+    for (int i = 0; i < plr1->cards->size(); i++){
+        if (plr1->cards->at(i) == CardToSwap){
+            indexOfCardToSwap = i;
+            break;
+        }
     }
 }
 
@@ -535,6 +553,8 @@ void Cabo::swap_with() {
         if(plr2->cards->at(i) == selected) {
             plr1->cards->replace(indexOfCardToSwap, selected);
             plr2->cards->replace(i, CardToSwap);
+            place(1, selected, indexOfCardToSwap);
+            place(2,CardToSwap, i);
             break;
         }
     }
@@ -542,6 +562,8 @@ void Cabo::swap_with() {
         if(plr3->cards->at(i) == selected) {
             plr1->cards->replace(indexOfCardToSwap, selected);
             plr3->cards->replace(i, CardToSwap);
+            place(1, selected, indexOfCardToSwap);
+            place(3,CardToSwap, i);
             break;
         }
     }
@@ -549,6 +571,8 @@ void Cabo::swap_with() {
         if(plr4->cards->at(i) == selected) {
             plr1->cards->replace(indexOfCardToSwap, selected);
             plr4->cards->replace(i, CardToSwap);
+            place(1, selected, indexOfCardToSwap);
+            place(4,CardToSwap, i);
             break;
         }
     }
@@ -556,6 +580,9 @@ void Cabo::swap_with() {
     PushButton_SwapWith->hide();
     PushButton_EndTurn->show();
 
+    for(auto card=plr1->cards->begin();card<plr1->cards->end();card++) {
+        (*card)->setFlag(QGraphicsItem::ItemIsSelectable, false);
+    }
     for(auto card=plr2->cards->begin();card<plr2->cards->end();card++) {
         (*card)->setFlag(QGraphicsItem::ItemIsSelectable, false);
     }
@@ -586,9 +613,6 @@ void Cabo::discardFromDraw() {
 void Cabo::fromDiscard() {
     CaboCard * drawn = discardpile->front();
     discardpile->pop_front();
-    if(discardpile->size() > 0) {
-        discardpile->at(0)->show();
-    }
     CardInPlay = drawn;
     PushButton_PickFromDiscard->hide();
     PushButton_PickFromDraw->hide();
@@ -596,14 +620,72 @@ void Cabo::fromDiscard() {
     PushButton_UseSpecial->hide();
     PushButton_ReplaceCard->show();
 
-
-    place(1,drawn,-1); // commented out so that discard pile doesnt look empty
+    place(1,drawn,-1);
     for(auto card=plr1->cards->begin();card<plr1->cards->end();card++) {
         (*card)->setFlag(QGraphicsItem::ItemIsSelectable,true);
     }
 }
 
 void Cabo::calledCabo() {
+    computerTurn();
+
+    for(int i = 0; i < plr1->cards->size(); i++) {
+        plr1->cards->at(i)->faceup = true;
+        place(1, plr1->cards->at(i), i);
+    }
+    for(int i = 0; i < plr2->cards->size(); i++) {
+        plr2->cards->at(i)->faceup = true;
+        place(2, plr2->cards->at(i), i);
+    }
+    for(int i = 0; i < plr3->cards->size(); i++) {
+        plr3->cards->at(i)->faceup = true;
+        place(3, plr3->cards->at(i), i);
+    }
+    for(int i = 0; i < plr4->cards->size(); i++) {
+        plr4->cards->at(i)->faceup = true;
+        place(4, plr4->cards->at(i), i);
+    }
+
+    int winner, min, sum1, sum2, sum3, sum4;
+    
+    winner = 1;
+    min, sum1 = plr1->Sum_of_Cards();
+    sum2 = plr2->Sum_of_Cards();
+    sum3 = plr3->Sum_of_Cards();
+    sum4 = plr4->Sum_of_Cards();
+    
+    if (plr2->Sum_of_Cards() < min) {
+        winner = 2;
+        min = plr2->Sum_of_Cards();
+    }
+    
+    if (plr3->Sum_of_Cards() < min) {
+        winner = 3;
+        min = plr3->Sum_of_Cards();
+    }
+    
+    if (plr4->Sum_of_Cards() < min) {
+        winner = 4;
+        min = plr4->Sum_of_Cards();
+    }
+    
+    Label_Text->setText(QString("Player 1: %1\nPlayer 2: %2\nPlayer 3: %3\nPlayer 4: %4\nWinner: Player %5").arg(sum1).arg(sum2).arg(sum3).arg(sum4).arg(winner));
+    Label_Text->show();
+    PushButton_CallCabo->hide();
+    PushButton_PickFromDiscard->hide();
+    PushButton_PickFromDraw->hide();
+}
+
+void Cabo::refill_draw() {
+    discardpile->at(0)->hide();
+
+    while (discardpile->size()>1){
+        drawpile->append(discardpile->at(0));
+        discardpile->at(0)->hide();
+        discardpile->pop_front();
+    }
+
+    discardpile->at(0)->show();
 }
 
 void Cabo::exit() {
