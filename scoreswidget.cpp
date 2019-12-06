@@ -28,7 +28,7 @@ scoreswidget::scoreswidget(QWidget *parent, User *user, int gID) : QWidget(paren
             } else {
                 User_Scores = new QString(inventory_list1[0]);
             }
-            Label_Scores->setText(Label_Scores->text() + User_Scores);
+            Label_Scores->setText(Label_Scores->text() + (*User_Scores));
 //            GridL->addWidget(User_Scores,0,1);
             ///// now top score
             int top_score = 0;
@@ -77,7 +77,7 @@ scoreswidget::scoreswidget(QWidget *parent, User *user, int gID) : QWidget(paren
                         User_Scores = new QString(inventory_list2[0] + ". Your average score: " + QString::number(user_avg));
                     }
                 }
-                Label_Scores->setText(Label_Scores->text() + User_Scores);
+                Label_Scores->setText(Label_Scores->text() + (*User_Scores));
 //                GridL->addWidget(User_Scores,0,1);
                 ///// now top score
                 int top_score = 0;

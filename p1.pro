@@ -1,6 +1,9 @@
 QT+=widgets
 #QT+=testlib
 
+CONFIG += qt warn_on release
+CONFIG += c++11
+
 HEADERS += \
     mainwidget.h \
     signupwidget.h \
