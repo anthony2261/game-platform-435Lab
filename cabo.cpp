@@ -77,7 +77,7 @@ Cabo::Cabo(User *user, int gID)
 
     view = new QGraphicsView(this);
     view->setFixedWidth(1100);
-    view->setFixedHeight(800);
+    view->setFixedHeight(600);
     this->setSceneRect(0,0,1100,800);
 
     //GridL:
