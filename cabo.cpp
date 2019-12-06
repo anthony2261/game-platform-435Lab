@@ -701,6 +701,47 @@ void Cabo::calledCabo() {
     PushButton_CallCabo->hide();
     PushButton_PickFromDiscard->hide();
     PushButton_PickFromDraw->hide();
+
+    if(user->username != "Guest") {
+        QString val;
+        QFile file;
+        file.setFileName("/home/eece435l/project_ja_9/users/users.json");
+        file.open(QIODevice::ReadOnly | QIODevice::Text);
+        val = file.readAll();
+        file.close();
+        QJsonDocument d = QJsonDocument::fromJson(val.toUtf8());
+        QJsonObject sett2 = d.object();
+
+        QVariantMap root_map = sett2.toVariantMap();
+        QVariantMap stat_map = root_map.value(user->username).toMap();
+        QStringList inventory_list2 = stat_map.value("score2").toStringList();
+        if (inventory_list2.size() == 0) {
+            if(winner == 1) {
+                qWarning() <<user->username << " wins";
+                inventory_list2.append("1");
+            } else {
+                inventory_list2.append("0");
+            }
+        } else {
+            if (winner == 1) {
+                int new_score = inventory_list2.at(0).toInt() + 1;
+                inventory_list2[0] = QString::number(new_score);
+            }
+        }
+        inventory_list2.append(QString::number(sum1));
+        stat_map.remove("score2");
+        stat_map.insert("score2", inventory_list2);
+        root_map.insert(user->username,stat_map);
+        sett2 = QJsonObject::fromVariantMap(root_map);
+        if (!file.open(QIODevice::WriteOnly)) {
+                qWarning("Couldn't open save file.");
+        } else {
+            QJsonDocument saveDoc(sett2);
+            QString json_string = saveDoc.toJson();
+            file.write(json_string.toLocal8Bit());
+            file.close();
+        }
+    }
 }
 
 void Cabo::refill_draw() {
