@@ -27,6 +27,7 @@ private:
     QGridLayout *GridL; //!< Grid
     QPushButton *PushButton_Exit;
     QPushButton *PushButton_Startgame;
+    QPushButton *PushButton_Ready;
     QPushButton *PushButton_PickFromDraw;
     QPushButton *PushButton_PickFromDiscard;
     QPushButton *PushButton_CallCabo;
@@ -78,6 +79,7 @@ public slots:
     void swap();
     void swap_with();
     void refill_draw();
+    void ready();
 };
 
 #endif // CABO_H
